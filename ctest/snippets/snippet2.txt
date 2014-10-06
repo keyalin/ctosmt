@@ -1,9 +1,13 @@
 int a;
 char c[100];
 float b;
-
+char* h;
+int* n;
+float* k;
 int d = 4;
 float e = 5;
 s;
-char* g = "abcd";
+char* g = "abcdefghijklmn";
 char f = 'c';
+
+int m = a + b;

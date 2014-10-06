@@ -10,11 +10,14 @@ statement
 	; 
 
 declarationStat
-	: type ID ('[' INT ']')? ';'
+	: type ID ('[' INT ']') ';'
+	| type '*' ID ';'
+	| type ID ';'
 	;
 
 assignStat
-	: type? ID '=' expr ';'
+	: type? ID '=' expr  ';'
+	| type? '*' ID '=' (Address | StringLiteral) ';'
 	;
 	
 returnStat
@@ -36,6 +39,9 @@ expr
 	| StringLiteral
 	;
 	
+Address: '&' ID;
+
+	
 
 
 
@@ -46,18 +52,8 @@ type
 	: Int
 	| Char
 	| Float
-	| IntPointer
-	| FloatPointer
-	| String
 	;
 
-
-
-
-	
-String
-	: CharPointer
-	;
 	
 	
 
@@ -78,12 +74,7 @@ Char : 'char';
 
 Float : 'float';
 
-IntPointer 
-	: 'int' '*'
-	;
 
-CharPointer : 'char*';
-FloatPointer : 'float' '*';
 ID : ('a'..'z' |'A'..'Z'|'_')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
 
 INT: ('0'..'9')+;
