@@ -1,0 +1,15 @@
+int input;
+int a = 10;
+float h;
+char m;
+
+float b = 10.0;
+char c = 'c';
+char array[100];
+
+
+int* g = &a;
+float* p = &b;
+char* literal = "abcd";
+
+return input;
