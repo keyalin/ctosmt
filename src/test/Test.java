@@ -11,17 +11,46 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import translators.SnippetTranslator;
+import translators.StringMethodTranslator;
+import utility.Utility;
+
 
 public class Test {
-
+	
+	
+//	int a;
+//	char c[100];
+//	float b;
+//	char* h;
+//	int* n;
+//	float* k;
+//	int d = 4;
+//	float e = 5;
+//	s;
+//	char* g = "abcdefghijklmn";
+//	char f = 'c';
+//
+//	int m = a + b;
+	
+// this is a test to convert the above code to constraints, the constraints will be printed out on console
 	@org.junit.Test
 	public void test1() throws IOException{
-		
+		String s = Utility.getStringFromFile("ctest/snippets/snippet2.txt");
+		SnippetTranslator translator = new SnippetTranslator(s);
+		for(String c : translator.getConstraints()){
+			System.out.println(c);
+		}
 	}
 	
+	
+	// this is a test case for printing out strcmp function in c
+	// In order not to print out too many constraints, only the constraints of comparsion part is printed out
 	@org.junit.Test
 	public void CTest2(){
-		String result = invokeZ3onFile("CSMT/IOtest0.smt");
+		String a = "abcdefg";
+		String b = "98910";
+		String result = StringMethodTranslator.getStrcmpConstraints("a", a, "b", b);
 		System.out.println(result);
 	}
 	
@@ -64,7 +93,7 @@ public class Test {
 	 */
 	@org.junit.Test
 	public void CTest3() throws IOException{
-		List<String> result = searchFunction(new int[]{2, 2}, 9);// inputs are 2, 2 and output is 4
+		List<String> result = searchFunction(new int[]{2, 2}, 4);// inputs are 2, 2 and output is 4
 		
 		for(String s : result){
 			System.out.println(s);

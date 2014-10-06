@@ -18,22 +18,20 @@ public class SnippetParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__9=1, T__8=2, T__7=3, T__6=4, T__5=5, T__4=6, T__3=7, T__2=8, T__1=9, 
-		T__0=10, CallExpr=11, ID=12, Int=13, Char=14, Float=15, IntPointer=16, 
-		CharPointer=17, FloatPointer=18, INT=19, FLOAT=20, WS=21;
+		T__0=10, Address=11, CallExpr=12, Int=13, Char=14, Float=15, ID=16, INT=17, 
+		FLOAT=18, WS=19, CharacterLiteral=20, StringLiteral=21, Character=22;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'/'", "'%'", "'return'", "'*'", "'+'", "';'", "'['", "'-'", 
-		"'='", "']'", "CallExpr", "ID", "'int'", "'char'", "'float'", "'int*'", 
-		"'char*'", "'float*'", "INT", "FLOAT", "WS"
+		"'='", "']'", "Address", "CallExpr", "'int'", "'char'", "'float'", "ID", 
+		"INT", "FLOAT", "WS", "CharacterLiteral", "StringLiteral", "Character"
 	};
 	public static final int
 		RULE_prog = 0, RULE_statement = 1, RULE_declarationStat = 2, RULE_assignStat = 3, 
 		RULE_returnStat = 4, RULE_exprStat = 5, RULE_expr = 6, RULE_type = 7, 
-		RULE_builtin = 8, RULE_pointers = 9, RULE_string = 10, RULE_addictiveOperator = 11, 
-		RULE_multiOperater = 12;
+		RULE_addictiveOperator = 8, RULE_multiOperater = 9;
 	public static final String[] ruleNames = {
 		"prog", "statement", "declarationStat", "assignStat", "returnStat", "exprStat", 
-		"expr", "type", "builtin", "pointers", "string", "addictiveOperator", 
-		"multiOperater"
+		"expr", "type", "addictiveOperator", "multiOperater"
 	};
 
 	@Override
@@ -83,16 +81,16 @@ public class SnippetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(29);
+			setState(23);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << CallExpr) | (1L << ID) | (1L << Int) | (1L << Char) | (1L << Float) | (1L << IntPointer) | (1L << CharPointer) | (1L << FloatPointer) | (1L << INT) | (1L << FLOAT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << T__6) | (1L << CallExpr) | (1L << Int) | (1L << Char) | (1L << Float) | (1L << ID) | (1L << INT) | (1L << FLOAT) | (1L << CharacterLiteral) | (1L << StringLiteral))) != 0)) {
 				{
 				{
-				setState(26); statement();
+				setState(20); statement();
 				}
 				}
-				setState(31);
+				setState(25);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -140,30 +138,30 @@ public class SnippetParser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_statement);
 		try {
-			setState(36);
+			setState(30);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(32); declarationStat();
+				setState(26); declarationStat();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(33); assignStat();
+				setState(27); assignStat();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(34); returnStat();
+				setState(28); returnStat();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(35); exprStat();
+				setState(29); exprStat();
 				}
 				break;
 			}
@@ -202,23 +200,39 @@ public class SnippetParser extends Parser {
 	public final DeclarationStatContext declarationStat() throws RecognitionException {
 		DeclarationStatContext _localctx = new DeclarationStatContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_declarationStat);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(38); type();
-			setState(39); match(ID);
-			setState(43);
-			_la = _input.LA(1);
-			if (_la==T__3) {
+			setState(49);
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
 				{
-				setState(40); match(T__3);
-				setState(41); match(INT);
-				setState(42); match(T__0);
+				setState(32); type();
+				setState(33); match(ID);
+				{
+				setState(34); match(T__3);
+				setState(35); match(INT);
+				setState(36); match(T__0);
 				}
-			}
-
-			setState(45); match(T__4);
+				setState(38); match(T__4);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(40); type();
+				setState(41); match(T__6);
+				setState(42); match(ID);
+				setState(43); match(T__4);
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(45); type();
+				setState(46); match(ID);
+				setState(47); match(T__4);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -237,9 +251,11 @@ public class SnippetParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode StringLiteral() { return getToken(SnippetParser.StringLiteral, 0); }
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
+		public TerminalNode Address() { return getToken(SnippetParser.Address, 0); }
 		public AssignStatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -259,20 +275,48 @@ public class SnippetParser extends Parser {
 		enterRule(_localctx, 6, RULE_assignStat);
 		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(48);
-			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Int) | (1L << Char) | (1L << Float) | (1L << IntPointer) | (1L << CharPointer) | (1L << FloatPointer))) != 0)) {
+			setState(67);
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
 				{
-				setState(47); type();
+				setState(52);
+				_la = _input.LA(1);
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Int) | (1L << Char) | (1L << Float))) != 0)) {
+					{
+					setState(51); type();
+					}
 				}
-			}
 
-			setState(50); match(ID);
-			setState(51); match(T__1);
-			setState(52); expr(0);
-			setState(53); match(T__4);
+				setState(54); match(ID);
+				setState(55); match(T__1);
+				setState(56); expr(0);
+				setState(57); match(T__4);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(60);
+				_la = _input.LA(1);
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Int) | (1L << Char) | (1L << Float))) != 0)) {
+					{
+					setState(59); type();
+					}
+				}
+
+				setState(62); match(T__6);
+				setState(63); match(ID);
+				setState(64); match(T__1);
+				setState(65);
+				_la = _input.LA(1);
+				if ( !(_la==Address || _la==StringLiteral) ) {
+				_errHandler.recoverInline(this);
+				}
+				consume();
+				setState(66); match(T__4);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -308,9 +352,9 @@ public class SnippetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(55); match(T__7);
-			setState(56); match(ID);
-			setState(57); match(T__4);
+			setState(69); match(T__7);
+			setState(70); match(ID);
+			setState(71); match(T__4);
 			}
 		}
 		catch (RecognitionException re) {
@@ -328,6 +372,7 @@ public class SnippetParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode CallExpr() { return getToken(SnippetParser.CallExpr, 0); }
 		public ExprStatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -346,10 +391,28 @@ public class SnippetParser extends Parser {
 		ExprStatContext _localctx = new ExprStatContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_exprStat);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(59); expr(0);
-			setState(60); match(T__4);
+			setState(78);
+			switch (_input.LA(1)) {
+			case CallExpr:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(73); match(CallExpr);
+				setState(74); match(T__4);
+				}
+				break;
+			case ID:
+			case INT:
+			case FLOAT:
+			case CharacterLiteral:
+			case StringLiteral:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(75); expr(0);
+				setState(76); match(T__4);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -374,8 +437,9 @@ public class SnippetParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public TerminalNode StringLiteral() { return getToken(SnippetParser.StringLiteral, 0); }
 		public TerminalNode INT() { return getToken(SnippetParser.INT, 0); }
-		public TerminalNode CallExpr() { return getToken(SnippetParser.CallExpr, 0); }
+		public TerminalNode CharacterLiteral() { return getToken(SnippetParser.CharacterLiteral, 0); }
 		public TerminalNode FLOAT() { return getToken(SnippetParser.FLOAT, 0); }
 		public MultiOperaterContext multiOperater() {
 			return getRuleContext(MultiOperaterContext.class,0);
@@ -409,68 +473,73 @@ public class SnippetParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(67);
+			setState(86);
 			switch (_input.LA(1)) {
 			case ID:
 				{
-				setState(63); match(ID);
+				setState(81); match(ID);
 				}
 				break;
 			case INT:
 				{
-				setState(64); match(INT);
+				setState(82); match(INT);
 				}
 				break;
 			case FLOAT:
 				{
-				setState(65); match(FLOAT);
+				setState(83); match(FLOAT);
 				}
 				break;
-			case CallExpr:
+			case CharacterLiteral:
 				{
-				setState(66); match(CallExpr);
+				setState(84); match(CharacterLiteral);
+				}
+				break;
+			case StringLiteral:
+				{
+				setState(85); match(StringLiteral);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(79);
+			setState(98);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(77);
-					switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+					setState(96);
+					switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(69);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(70); addictiveOperator();
-						setState(71); expr(5);
+						setState(88);
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						setState(89); addictiveOperator();
+						setState(90); expr(6);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(73);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(74); multiOperater();
-						setState(75); expr(4);
+						setState(92);
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						setState(93); multiOperater();
+						setState(94); expr(5);
 						}
 						break;
 					}
 					} 
 				}
-				setState(81);
+				setState(100);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			}
 			}
 		}
@@ -486,15 +555,9 @@ public class SnippetParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
-		public BuiltinContext builtin() {
-			return getRuleContext(BuiltinContext.class,0);
-		}
-		public StringContext string() {
-			return getRuleContext(StringContext.class,0);
-		}
-		public PointersContext pointers() {
-			return getRuleContext(PointersContext.class,0);
-		}
+		public TerminalNode Char() { return getToken(SnippetParser.Char, 0); }
+		public TerminalNode Float() { return getToken(SnippetParser.Float, 0); }
+		public TerminalNode Int() { return getToken(SnippetParser.Int, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -512,155 +575,16 @@ public class SnippetParser extends Parser {
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_type);
-		try {
-			setState(85);
-			switch (_input.LA(1)) {
-			case Int:
-			case Char:
-			case Float:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(82); builtin();
-				}
-				break;
-			case IntPointer:
-			case FloatPointer:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(83); pointers();
-				}
-				break;
-			case CharPointer:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(84); string();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class BuiltinContext extends ParserRuleContext {
-		public TerminalNode Char() { return getToken(SnippetParser.Char, 0); }
-		public TerminalNode Float() { return getToken(SnippetParser.Float, 0); }
-		public TerminalNode Int() { return getToken(SnippetParser.Int, 0); }
-		public BuiltinContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_builtin; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).enterBuiltin(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).exitBuiltin(this);
-		}
-	}
-
-	public final BuiltinContext builtin() throws RecognitionException {
-		BuiltinContext _localctx = new BuiltinContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_builtin);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(101);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Int) | (1L << Char) | (1L << Float))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PointersContext extends ParserRuleContext {
-		public TerminalNode FloatPointer() { return getToken(SnippetParser.FloatPointer, 0); }
-		public TerminalNode IntPointer() { return getToken(SnippetParser.IntPointer, 0); }
-		public PointersContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_pointers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).enterPointers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).exitPointers(this);
-		}
-	}
-
-	public final PointersContext pointers() throws RecognitionException {
-		PointersContext _localctx = new PointersContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_pointers);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(89);
-			_la = _input.LA(1);
-			if ( !(_la==IntPointer || _la==FloatPointer) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class StringContext extends ParserRuleContext {
-		public TerminalNode CharPointer() { return getToken(SnippetParser.CharPointer, 0); }
-		public StringContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_string; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).enterString(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SnippetListener ) ((SnippetListener)listener).exitString(this);
-		}
-	}
-
-	public final StringContext string() throws RecognitionException {
-		StringContext _localctx = new StringContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_string);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(91); match(CharPointer);
 			}
 		}
 		catch (RecognitionException re) {
@@ -691,12 +615,12 @@ public class SnippetParser extends Parser {
 
 	public final AddictiveOperatorContext addictiveOperator() throws RecognitionException {
 		AddictiveOperatorContext _localctx = new AddictiveOperatorContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_addictiveOperator);
+		enterRule(_localctx, 16, RULE_addictiveOperator);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(93);
+			setState(103);
 			_la = _input.LA(1);
 			if ( !(_la==T__5 || _la==T__2) ) {
 			_errHandler.recoverInline(this);
@@ -732,12 +656,12 @@ public class SnippetParser extends Parser {
 
 	public final MultiOperaterContext multiOperater() throws RecognitionException {
 		MultiOperaterContext _localctx = new MultiOperaterContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_multiOperater);
+		enterRule(_localctx, 18, RULE_multiOperater);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(105);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__9) | (1L << T__8) | (1L << T__6))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -764,38 +688,41 @@ public class SnippetParser extends Parser {
 	}
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return precpred(_ctx, 4);
-		case 1: return precpred(_ctx, 3);
+		case 0: return precpred(_ctx, 5);
+		case 1: return precpred(_ctx, 4);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\27d\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\4\16\t\16\3\2\7\2\36\n\2\f\2\16\2!\13\2\3\3\3\3\3\3\3\3"+
-		"\5\3\'\n\3\3\4\3\4\3\4\3\4\3\4\5\4.\n\4\3\4\3\4\3\5\5\5\63\n\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\5\bF\n\b"+
-		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\7\bP\n\b\f\b\16\bS\13\b\3\t\3\t\3\t\5"+
-		"\tX\n\t\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3\16\3\16\3\16\2\3\16\17\2\4"+
-		"\6\b\n\f\16\20\22\24\26\30\32\2\6\3\2\17\21\4\2\22\22\24\24\4\2\7\7\n"+
-		"\n\4\2\3\4\6\6c\2\37\3\2\2\2\4&\3\2\2\2\6(\3\2\2\2\b\62\3\2\2\2\n9\3\2"+
-		"\2\2\f=\3\2\2\2\16E\3\2\2\2\20W\3\2\2\2\22Y\3\2\2\2\24[\3\2\2\2\26]\3"+
-		"\2\2\2\30_\3\2\2\2\32a\3\2\2\2\34\36\5\4\3\2\35\34\3\2\2\2\36!\3\2\2\2"+
-		"\37\35\3\2\2\2\37 \3\2\2\2 \3\3\2\2\2!\37\3\2\2\2\"\'\5\6\4\2#\'\5\b\5"+
-		"\2$\'\5\n\6\2%\'\5\f\7\2&\"\3\2\2\2&#\3\2\2\2&$\3\2\2\2&%\3\2\2\2\'\5"+
-		"\3\2\2\2()\5\20\t\2)-\7\16\2\2*+\7\t\2\2+,\7\25\2\2,.\7\f\2\2-*\3\2\2"+
-		"\2-.\3\2\2\2./\3\2\2\2/\60\7\b\2\2\60\7\3\2\2\2\61\63\5\20\t\2\62\61\3"+
-		"\2\2\2\62\63\3\2\2\2\63\64\3\2\2\2\64\65\7\16\2\2\65\66\7\13\2\2\66\67"+
-		"\5\16\b\2\678\7\b\2\28\t\3\2\2\29:\7\5\2\2:;\7\16\2\2;<\7\b\2\2<\13\3"+
-		"\2\2\2=>\5\16\b\2>?\7\b\2\2?\r\3\2\2\2@A\b\b\1\2AF\7\16\2\2BF\7\25\2\2"+
-		"CF\7\26\2\2DF\7\r\2\2E@\3\2\2\2EB\3\2\2\2EC\3\2\2\2ED\3\2\2\2FQ\3\2\2"+
-		"\2GH\f\6\2\2HI\5\30\r\2IJ\5\16\b\7JP\3\2\2\2KL\f\5\2\2LM\5\32\16\2MN\5"+
-		"\16\b\6NP\3\2\2\2OG\3\2\2\2OK\3\2\2\2PS\3\2\2\2QO\3\2\2\2QR\3\2\2\2R\17"+
-		"\3\2\2\2SQ\3\2\2\2TX\5\22\n\2UX\5\24\13\2VX\5\26\f\2WT\3\2\2\2WU\3\2\2"+
-		"\2WV\3\2\2\2X\21\3\2\2\2YZ\t\2\2\2Z\23\3\2\2\2[\\\t\3\2\2\\\25\3\2\2\2"+
-		"]^\7\23\2\2^\27\3\2\2\2_`\t\4\2\2`\31\3\2\2\2ab\t\5\2\2b\33\3\2\2\2\n"+
-		"\37&-\62EOQW";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\30n\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\3"+
+		"\2\7\2\30\n\2\f\2\16\2\33\13\2\3\3\3\3\3\3\3\3\5\3!\n\3\3\4\3\4\3\4\3"+
+		"\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\64\n\4\3\5"+
+		"\5\5\67\n\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5?\n\5\3\5\3\5\3\5\3\5\3\5\5\5F"+
+		"\n\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\5\7Q\n\7\3\b\3\b\3\b\3\b\3\b"+
+		"\3\b\5\bY\n\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\7\bc\n\b\f\b\16\bf\13\b"+
+		"\3\t\3\t\3\n\3\n\3\13\3\13\3\13\2\3\16\f\2\4\6\b\n\f\16\20\22\24\2\6\4"+
+		"\2\r\r\27\27\3\2\17\21\4\2\7\7\n\n\4\2\3\4\6\6s\2\31\3\2\2\2\4 \3\2\2"+
+		"\2\6\63\3\2\2\2\bE\3\2\2\2\nG\3\2\2\2\fP\3\2\2\2\16X\3\2\2\2\20g\3\2\2"+
+		"\2\22i\3\2\2\2\24k\3\2\2\2\26\30\5\4\3\2\27\26\3\2\2\2\30\33\3\2\2\2\31"+
+		"\27\3\2\2\2\31\32\3\2\2\2\32\3\3\2\2\2\33\31\3\2\2\2\34!\5\6\4\2\35!\5"+
+		"\b\5\2\36!\5\n\6\2\37!\5\f\7\2 \34\3\2\2\2 \35\3\2\2\2 \36\3\2\2\2 \37"+
+		"\3\2\2\2!\5\3\2\2\2\"#\5\20\t\2#$\7\22\2\2$%\7\t\2\2%&\7\23\2\2&\'\7\f"+
+		"\2\2\'(\3\2\2\2()\7\b\2\2)\64\3\2\2\2*+\5\20\t\2+,\7\6\2\2,-\7\22\2\2"+
+		"-.\7\b\2\2.\64\3\2\2\2/\60\5\20\t\2\60\61\7\22\2\2\61\62\7\b\2\2\62\64"+
+		"\3\2\2\2\63\"\3\2\2\2\63*\3\2\2\2\63/\3\2\2\2\64\7\3\2\2\2\65\67\5\20"+
+		"\t\2\66\65\3\2\2\2\66\67\3\2\2\2\678\3\2\2\289\7\22\2\29:\7\13\2\2:;\5"+
+		"\16\b\2;<\7\b\2\2<F\3\2\2\2=?\5\20\t\2>=\3\2\2\2>?\3\2\2\2?@\3\2\2\2@"+
+		"A\7\6\2\2AB\7\22\2\2BC\7\13\2\2CD\t\2\2\2DF\7\b\2\2E\66\3\2\2\2E>\3\2"+
+		"\2\2F\t\3\2\2\2GH\7\5\2\2HI\7\22\2\2IJ\7\b\2\2J\13\3\2\2\2KL\7\16\2\2"+
+		"LQ\7\b\2\2MN\5\16\b\2NO\7\b\2\2OQ\3\2\2\2PK\3\2\2\2PM\3\2\2\2Q\r\3\2\2"+
+		"\2RS\b\b\1\2SY\7\22\2\2TY\7\23\2\2UY\7\24\2\2VY\7\26\2\2WY\7\27\2\2XR"+
+		"\3\2\2\2XT\3\2\2\2XU\3\2\2\2XV\3\2\2\2XW\3\2\2\2Yd\3\2\2\2Z[\f\7\2\2["+
+		"\\\5\22\n\2\\]\5\16\b\b]c\3\2\2\2^_\f\6\2\2_`\5\24\13\2`a\5\16\b\7ac\3"+
+		"\2\2\2bZ\3\2\2\2b^\3\2\2\2cf\3\2\2\2db\3\2\2\2de\3\2\2\2e\17\3\2\2\2f"+
+		"d\3\2\2\2gh\t\3\2\2h\21\3\2\2\2ij\t\4\2\2j\23\3\2\2\2kl\t\5\2\2l\25\3"+
+		"\2\2\2\f\31 \63\66>EPXbd";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

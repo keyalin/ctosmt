@@ -9,15 +9,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface SnippetListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link SnippetParser#string}.
+	 * Enter a parse tree produced by {@link SnippetParser#multiOperater}.
 	 * @param ctx the parse tree
 	 */
-	void enterString(@NotNull SnippetParser.StringContext ctx);
+	void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SnippetParser#string}.
+	 * Exit a parse tree produced by {@link SnippetParser#multiOperater}.
 	 * @param ctx the parse tree
 	 */
-	void exitString(@NotNull SnippetParser.StringContext ctx);
+	void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SnippetParser#exprStat}.
 	 * @param ctx the parse tree
@@ -28,46 +28,6 @@ public interface SnippetListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExprStat(@NotNull SnippetParser.ExprStatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#builtin}.
-	 * @param ctx the parse tree
-	 */
-	void enterBuiltin(@NotNull SnippetParser.BuiltinContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#builtin}.
-	 * @param ctx the parse tree
-	 */
-	void exitBuiltin(@NotNull SnippetParser.BuiltinContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void enterType(@NotNull SnippetParser.TypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void exitType(@NotNull SnippetParser.TypeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#prog}.
-	 * @param ctx the parse tree
-	 */
-	void enterProg(@NotNull SnippetParser.ProgContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#prog}.
-	 * @param ctx the parse tree
-	 */
-	void exitProg(@NotNull SnippetParser.ProgContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#multiOperater}.
-	 * @param ctx the parse tree
-	 */
-	void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#multiOperater}.
-	 * @param ctx the parse tree
-	 */
-	void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SnippetParser#returnStat}.
 	 * @param ctx the parse tree
@@ -119,6 +79,16 @@ public interface SnippetListener extends ParseTreeListener {
 	 */
 	void exitAssignStat(@NotNull SnippetParser.AssignStatContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SnippetParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(@NotNull SnippetParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(@NotNull SnippetParser.TypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SnippetParser#declarationStat}.
 	 * @param ctx the parse tree
 	 */
@@ -129,13 +99,13 @@ public interface SnippetListener extends ParseTreeListener {
 	 */
 	void exitDeclarationStat(@NotNull SnippetParser.DeclarationStatContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SnippetParser#pointers}.
+	 * Enter a parse tree produced by {@link SnippetParser#prog}.
 	 * @param ctx the parse tree
 	 */
-	void enterPointers(@NotNull SnippetParser.PointersContext ctx);
+	void enterProg(@NotNull SnippetParser.ProgContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SnippetParser#pointers}.
+	 * Exit a parse tree produced by {@link SnippetParser#prog}.
 	 * @param ctx the parse tree
 	 */
-	void exitPointers(@NotNull SnippetParser.PointersContext ctx);
+	void exitProg(@NotNull SnippetParser.ProgContext ctx);
 }

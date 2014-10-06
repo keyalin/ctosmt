@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StringRepresetationGenerator {
-	public static int count = 0;
 	private String ID;
 	private String primitive;
 	private List<String> constraints;
-	public StringRepresetationGenerator(String primitive){
+	public StringRepresetationGenerator(String ID, String primitive){
 		this.primitive = primitive;
-		ID = "_String_"+ (count++);
+		this.ID = ID;
 		constraints = new ArrayList<String>();
 		generateConstraints();
 	}
@@ -101,8 +100,8 @@ public class StringRepresetationGenerator {
 	}
 	
 	public static void main(String[] args){
-		StringRepresetationGenerator g = new StringRepresetationGenerator("abcd34 {$");
-		System.out.println(g);
+		//StringRepresetationGenerator g = new StringRepresetationGenerator("p", "abcd34");
+		System.out.println(Integer.toString(100));
 	}
 	
 	

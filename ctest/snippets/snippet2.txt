@@ -1,0 +1,9 @@
+int a;
+char c[100];
+float b;
+
+int d = 4;
+float e = 5;
+s;
+char* g = "abcd";
+char f = 'c';

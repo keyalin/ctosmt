@@ -17,13 +17,13 @@ public class SnippetBaseListener implements SnippetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterString(@NotNull SnippetParser.StringContext ctx) { }
+	@Override public void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitString(@NotNull SnippetParser.StringContext ctx) { }
+	@Override public void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -36,54 +36,6 @@ public class SnippetBaseListener implements SnippetListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExprStat(@NotNull SnippetParser.ExprStatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBuiltin(@NotNull SnippetParser.BuiltinContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBuiltin(@NotNull SnippetParser.BuiltinContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterType(@NotNull SnippetParser.TypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitType(@NotNull SnippetParser.TypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterProg(@NotNull SnippetParser.ProgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitProg(@NotNull SnippetParser.ProgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -149,6 +101,18 @@ public class SnippetBaseListener implements SnippetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterType(@NotNull SnippetParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(@NotNull SnippetParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDeclarationStat(@NotNull SnippetParser.DeclarationStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -161,13 +125,13 @@ public class SnippetBaseListener implements SnippetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPointers(@NotNull SnippetParser.PointersContext ctx) { }
+	@Override public void enterProg(@NotNull SnippetParser.ProgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPointers(@NotNull SnippetParser.PointersContext ctx) { }
+	@Override public void exitProg(@NotNull SnippetParser.ProgContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

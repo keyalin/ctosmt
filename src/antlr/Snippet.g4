@@ -10,11 +10,14 @@ statement
 	; 
 
 declarationStat
-	: type ID ('[' INT ']')?';'
+	: type ID ('[' INT ']') ';'
+	| type '*' ID ';'
+	| type ID ';'
 	;
 
 assignStat
-	: type? ID '=' expr ';'
+	: type? ID '=' expr  ';'
+	| type? '*' ID '=' (Address | StringLiteral) ';'
 	;
 	
 returnStat
@@ -23,6 +26,7 @@ returnStat
 	
 exprStat
 	: CallExpr ';'
+	| expr ';'
 	;
 
 expr 
@@ -31,35 +35,25 @@ expr
 	| expr addictiveOperator expr
 	| expr multiOperater expr
 	| FLOAT
+	| CharacterLiteral
+	| StringLiteral
 	;
 	
-CallExpr : ID '(' (ID | FLOAT | INT )*')';
+Address: '&' ID;
+
+	
+
+
+
+	
+CallExpr : ID '(' (ID | FLOAT | INT )* ')';
 
 type
-	: builtin
-	| pointers
-	| string
-	;
-
-ID : ('a'..'z' |'A'..'Z'|'_')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
-
-
-	
-	
-builtin 
 	: Int
 	| Char
 	| Float
 	;
-	
-pointers
-	: IntPointer
-	| FloatPointer
-	;
-	
-string
-	: CharPointer
-	;
+
 	
 	
 
@@ -80,17 +74,28 @@ Char : 'char';
 
 Float : 'float';
 
-IntPointer 
-	: 'int*'
-	;
 
-CharPointer : 'char*';
-FloatPointer : 'float*';
+ID : ('a'..'z' |'A'..'Z'|'_')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
 
 INT: ('0'..'9')+;
-FLOAT: ('0'..'9')+('.')('0'..'9');
+FLOAT: ('0'..'9')+('.')('0'..'9')+;
 
 WS : [ \t\r\n]+ -> skip;
+
+
+CharacterLiteral 
+	: '\'' (Character) '\''
+	;	
+	
+	
+StringLiteral
+	: '"' (Character)* '"' 
+	;
+
+
+Character : [0-9|a-z|A-Z];
+
+
 	
 
 	
