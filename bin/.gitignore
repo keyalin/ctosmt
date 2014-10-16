@@ -1,5 +1,4 @@
-/antlr
+/db
+/search
 /translators
-/test
-/utility
-/lookups
+/antlr
