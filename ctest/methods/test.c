@@ -12,7 +12,7 @@ int test(int a){
 		c = b * 2;
 	}
 	else{
-		c *= 2;
+		c = 2 * c;
 		*p = c;
 	}
 	a * b;
