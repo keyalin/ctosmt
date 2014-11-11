@@ -135,6 +135,11 @@ public class Test {
 		return functions;
 	}
 	
+	@org.junit.Test
+	public void test4()
+	{
+		System.out.println(invokeZ3onFile("CSMT/test1.smt"));
+	}
 	
 	public static String invokeZ3onFile(String file) {
 		String out = "";

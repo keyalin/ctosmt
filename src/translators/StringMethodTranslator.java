@@ -1,5 +1,7 @@
 package translators;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import lookups.StringReturnTable;
@@ -34,44 +36,96 @@ public class StringMethodTranslator {
 		}
 		
 		
-		String constraint = "(\nite\n"
-								+ "\t(= compare (" + left + " " + right + "  " + i + " ) 0) "
+		String constraint = "(\nif\n"
+								+ "\t(= (compare " + left + " " + right + "  " + i + " ) 0) "
 								+ compare(left, leftContent, right, rightContent, i + 1)
-								+ " \nthen " 
-									+ "\n(ite\n"
-										+ "\t(= compare (" + left + " " + right + " " + i + " ) 1) "
-										+ "1)"
-										+ " then -1)) ";
+								+ " \n " 
+									+ "\n(if\n"
+										+ "\t(= (compare " + left + " " + right + " " + i + " ) 1) "
+										+ "1"
+										+ "  -1)) ";
 		return constraint;
 										
 									
 	}
 	
-	//char* char *strcat(char *dest, const char *src)
-	/**
-	 * 
-	 * @param dest ID of dest
-	 * @param destContent the sequence
-	 * @param src ID of src
-	 * @param srcContent the character sequence
-	 * @return
-	 */
-	public static List<String> getStrcatConstraints(String dest, String destContent, String src, String srcContent){
-		String output = "_" + dest + "_" + count++;
-		StringReturnTable.getInstance().set(dest, output);
-		String primitive = destContent + srcContent;
-		return new StringRepresetationGenerator(output, primitive).getConstraints();
+	//char * strcat ( char * destination, const char * source );
+	public static List<String> getStrcatConstraints(String dest, String src, String result){
+		List<String> constraints = new ArrayList<String>();
+		String assertion = "(assert " + "(forall ((index Int))" + "(ite "
+				+ "(and" + "(>= index 0)" + "(< index (length "
+				+ dest
+				+ ")))"
+				+ "(= (charOf "
+				+ result
+				+ " index) (charOf "
+				+ dest
+				+ " index))"
+				+ "(ite "
+				+ "(and"
+				+ "(>= index (length "
+				+ dest
+				+ "))"
+				+ "(< index (+ (length "
+				+ dest
+				+ ") (length "
+				+ dest
+				+ "))))"
+				+ "(= (charOf "
+				+ result
+				+ " index) (charOf "
+				+ dest
+				+ " (- index (length " + dest + "))))" + "true))))";
+		String length = "(assert (= (length " + result + ") (+ (length " + dest
+				+ ") (length " + src + "))))";
+		String length2 = "(assert (>= (length " + dest + ") 0))";
+		String length3 = "(assert (>= (length " + result + ") 0))";
+		String length4 = "(assert (>= (length " + src + ") 0))";
+		constraints.add(assertion);
+		constraints.add(length);
+		constraints.add(length2);
+		constraints.add(length3);
+		constraints.add(length4);
+		return constraints;
 	}
 	
 	//char *strncat(char *dest, const char *src, size_t n)
-	public static List<String> getStrncatConstraints(String dest, String destContent, String src, String srcContent, int n){
-		if(n < srcContent.length()){
-			srcContent = srcContent.substring(0, n);
-		}
-		String output = "_" + dest + "_" + count++;
-		StringReturnTable.getInstance().set(dest, output);
-		String primitive = destContent + srcContent;
-		return new StringRepresetationGenerator(output, primitive).getConstraints();
+	public static List<String> getStrncatConstraints(String dest, String src, int n, String result){
+		List<String> constraints = new ArrayList<String>();
+		String copyLengthAssertion = "(assert (= copyLength (+ (length dest) (ite (> (length src) n) (length src) n))))";
+		String assertion = "(assert " + "(forall ((index Int))" + "(ite "
+				+ "(and" + "(>= index 0)" + "(< index (length "
+				+ dest
+				+ ")))"
+				+ "(= (charOf "
+				+ result
+				+ " index) (charOf "
+				+ dest
+				+ " index))"
+				+ "(ite "
+				+ "(and"
+				+ "(>= index (length "
+				+ dest
+				+ "))"
+				+ "(< index (+ (length "
+				+ dest
+				+ ") copyLength)))"
+				+ "(= (charOf "
+				+ result
+				+ " index) (charOf "
+				+ src
+				+ " (- index (length " + dest + "))))" + "true))))";
+		String length = "(assert (= (length " + result + ") (+ (length " + dest
+				+ ") (length " + src + "))))";
+		String length2 = "(assert (>= (length " + dest + ") 0))";
+		String length3 = "(assert (>= (length " + result + ") 0))";
+		String length4 = "(assert (>= (length " + src + ") 0))";
+		constraints.add(assertion);
+		constraints.add(length);
+		constraints.add(length2);
+		constraints.add(length3);
+		constraints.add(length4);
+		return constraints;
 	}
 	
 	//char *strchr(const char *str, int c)
@@ -83,37 +137,38 @@ public class StringMethodTranslator {
 		if(index == -1){
 			
 			String primitive = "";
-			return new StringRepresetationGenerator(output, primitive).getConstraints();			
+			return new StringRepresetation(output, primitive).getConstraints();			
 		}
 		else{
 			String primitive = src.substring(index);
-			return new StringRepresetationGenerator(output, primitive).getConstraints();
+			return new StringRepresetation(output, primitive).getConstraints();
 		}
 	}
 	
 
 	
 	public static void main(String[] args){
-		System.out.print(getStrcmpConstraints("left", "a", "right", "f"));
+		//System.out.print(getStrcmpConstraints("inputString", "abcd", "staticString", "abc"));
+		System.out.println(getstrncpyConstraints("inputString", "staticString", 4).get(0));
+		System.out.println(getstrncpyConstraints("inputString", "staticString", 4).get(1));
 	}
 	
 	//char *strcpy(char *dest, const char *src)
 	public static List<String> getstrcpyConstraints(String dest, String srcContent){
-		String output = "_" + dest + "_" + count++;
-		StringReturnTable.getInstance().set(dest, output);
-		String primitive =  srcContent;
-		return new StringRepresetationGenerator(output, primitive).getConstraints();
+		List<String> constraints = new ArrayList<String>();
+		String assertion = "(assert (= " + dest +  " " + srcContent + "))";
+		constraints.add(assertion);
+		return constraints;
 	}
 	
 	//char *strncpy(char *dest, const char *src)
 	public static List<String> getstrncpyConstraints(String dest, String srcContent, int n){
-		if(n < srcContent.length()){
-			srcContent = srcContent.substring(0, n);
-		}
-		String output = "_" + dest + "_" + count++;
-		StringReturnTable.getInstance().set(dest, output);
-		String primitive =  srcContent;
-		return new StringRepresetationGenerator(output, primitive).getConstraints();
+		List<String> constraints = new ArrayList<String>();
+		String length = "(assert (= (length "+ dest + ") (+ " + n + " (length " + srcContent + ")))";
+		String assertion = "(assert (forall ((index Int)) (ite (and (>= index 0) (< index " + n + ")) (= (charOf " + dest + " index) (charOf " + srcContent  + " index)) true)))";
+		constraints.add(length);
+		constraints.add(assertion);
+		return constraints;
 	}
 	
 

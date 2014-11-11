@@ -12,13 +12,13 @@ statement
 	; 
 
 assumeStat
-	: expr comparator expr
+	: expr comparator expr ';'
 	;
 	
 declarationStat
-	: type ('[' INT ']') ID  
-	| type '*' ID 
-	| type ID
+	: type ('[' INT ']') ID  ';'
+	| type '*' ID ';'
+	| type ID ';'
 	;
 
 assignStat
@@ -27,7 +27,7 @@ assignStat
 	;
 	
 returnStat
-	: 'return' '('ID ')' ';'
+	: 'return' '('ID | INT | FLOAT ')' ';'
 	;
 	
 exprStat
@@ -89,7 +89,7 @@ Char : 'char';
 Float : 'float';
 
 
-ID : ('a'..'z' |'A'..'Z'|'_')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
+ID : ('a'..'z' |'A'..'Z'|'_'|'|')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
 
 INT: ('0'..'9')+;
 FLOAT: ('0'..'9')+('.')('0'..'9')+;

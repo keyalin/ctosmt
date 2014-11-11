@@ -18,15 +18,15 @@ public class FileProcessor {
 	
 	public void print(){
 		for(Method m : methods){
-			for(String path : m.getPath()){
-				System.out.println(path);
-			}
+			System.out.println(m.getName());
+			System.out.println(m.getPathToInput().values());
+			System.out.println(m.getPath().get(0));
 		}
 	}
 	
 	private void parse(){
 		try {
-			String com = "./PathExtractor/pathgen " + fileName;
+			String com = "./PathExtractor/pathgen " + fileName + " ucFirst";
 
 			Process p = Runtime.getRuntime().exec(com);
 			BufferedReader ls_in = new BufferedReader(new InputStreamReader(
@@ -51,11 +51,13 @@ public class FileProcessor {
 				}
 				else if(s.startsWith("LOCAL")){					
 					path.append(s.substring(6, s.length() - 1));
+					path.append(";");
 					path.append("\n");
 				}
 				else if(s.startsWith("GLOBAL")){
-					path.append(s.substring(7, s.length() - 1));
-					path.append("\n");
+					continue;
+//					path.append(s.substring(7, s.length() - 1));
+//					path.append("\n");
 				}
 				else if(s.startsWith("FORMAL")){
 					input.append(s.substring(7, s.length() - 1));
@@ -82,10 +84,22 @@ public class FileProcessor {
 					path.append(s.substring(0, s.length() - 1));
 					path.append("\n");
 				}
+				else if(s.startsWith("ASSUME(")){
+					path.append(s.substring(7, s.length() - 1));
+					path.append(";");
+					path.append("\n");
+				}
 				else {
 					path.append(s);
 					path.append("\n");
 				}
+			}
+			if(method.getName() != null)
+			{
+				method.getPath().add(path.toString());
+				method.getPathToInput().put(path.toString(), input.toString());
+				methods.add(method);
+				methods.add(method);
 			}
 			ls_in.close();
 		} catch (IOException e) {
@@ -96,7 +110,7 @@ public class FileProcessor {
 	}
 
 	public static void main(String[] args){
-		FileProcessor processor = new FileProcessor("ctest/methods/test.c");
+		FileProcessor processor = new FileProcessor("ctest/methods/functions.c");
 		processor.print();
 	}
 

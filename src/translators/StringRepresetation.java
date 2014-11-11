@@ -3,49 +3,25 @@ package translators;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringRepresetationGenerator {
-	private String ID;
-	private String primitive;
+
+/**
+ * this is used to interpret a c string by z3
+ * @author yke
+ *
+ */
+public class StringRepresetation {
+	private String name;
+	private String content;
 	private List<String> constraints;
-	public StringRepresetationGenerator(String ID, String primitive){
-		this.primitive = primitive;
-		this.ID = ID;
+	public StringRepresetation(String name, String content){
+		this.name = name;
+		this.content = content;
 		constraints = new ArrayList<String>();
 		generateConstraints();
 	}
 	
 	
-	
-	
-	
-	public String getID() {
-		return ID;
-	}
-
-
-
-
-
-	public void setID(String iD) {
-		ID = iD;
-	}
-
-
-
-
-
-	public String getPrimitive() {
-		return primitive;
-	}
-
-
-
-
-
-	public void setPrimitive(String primitive) {
-		this.primitive = primitive;
-	}
-
+			
 
 
 
@@ -58,29 +34,58 @@ public class StringRepresetationGenerator {
 
 
 
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public String getContent() {
+		return content;
+	}
+
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+
 	public void setConstraints(List<String> constraints) {
 		this.constraints = constraints;
 	}
 
+	
+	public void print(){
+		for(String constraint : this.constraints){
+			System.out.println(constraint);
+		}
+	}
 
 
 
 
 	private void generateConstraints(){
-		constraints.add(getDeclareConstraint(ID));
-		constraints.add(getLengthConstraints(ID, primitive));
-		for(int i = 0; i < primitive.length(); i++){
-			constraints.add(getCharOfConstraint(ID, primitive,i));
+		constraints.add(getLengthConstraints(name, content));
+		for(int i = 0; i < content.length(); i++){
+			constraints.add(getCharOfConstraint(name, content,i));
 		}
 	}
 	
-	public static String getDeclareConstraint(String ID){
-		String constraint = "(declare-fun " + ID + " () String)";
+	public static String getDeclareConstraint(String name){
+		String constraint = "(declare-fun " + name + " () String)";
 		return constraint;
 	}
 	
-	public static String getCharOfConstraint(String ID, String primitive, int index){
-		String constraint = "(assert (= (charOf " + ID +  " " + index + ") " + encodeLetter(primitive.charAt(index)) + " ))";
+	public static String getCharOfConstraint(String name, String content, int index){
+		String constraint = "(assert (= (charOf " + name +  " " + index + ") " + encodeLetter(content.charAt(index)) + " ))";
 		return constraint;
 	}
 	
@@ -94,14 +99,15 @@ public class StringRepresetationGenerator {
 	
 	
 	
-	public static String getLengthConstraints(String ID, String primitive){
-		String constraint = "(assert (= (length " + ID + ") " + primitive.length() + "))";
+	public static String getLengthConstraints(String name, String content){
+		String constraint = "(assert (= (length " + name + ") " + content.length() + "))";
 		return constraint;
 	}
 	
 	public static void main(String[] args){
-		//StringRepresetationGenerator g = new StringRepresetationGenerator("p", "abcd34");
-		System.out.println(Integer.toString(100));
+		//StringRepresetation g = new StringRepresetation("p", "ab\\cd34");
+		//System.out.println(g);
+		getCharToInt();
 	}
 	
 	
@@ -207,8 +213,17 @@ public class StringRepresetationGenerator {
 				return "_slashb_";
 			}
 		}
-		System.err.println("Unsupported: " + c);
+		//System.err.println("Unsupported: " + c);
 		return "";
+	}
+	
+	public static void getCharToInt(){
+		for(int i = 0; i < 256; i++)
+		{
+			char c = (char)i;
+			String g = encodeLetter(c);
+			if(g.length() != 0)System.out.println("(assert (= " +  encodeLetter(c) + " " + i + "))");
+		}
 	}
 
 }

@@ -1,6 +1,3 @@
-
-
-;/////////////////////////Define String theory/////////////////
 (declare-sort String 0)
 
 (declare-fun _a_ () Int)
@@ -206,9 +203,67 @@
 (assert (= _rcurly_ 125))
 (assert (= _tilde_ 126))
 
+(declare-fun toLower (Char) Char)
+(assert (= (toLower _A_) _a_))
+(assert (= (toLower _B_) _b_))
+(assert (= (toLower _C_) _c_))
+(assert (= (toLower _D_) _d_))
+(assert (= (toLower _E_) _e_))
+(assert (= (toLower _F_) _f_))
+(assert (= (toLower _G_) _g_))
+(assert (= (toLower _H_) _h_))
+(assert (= (toLower _I_) _i_))
+(assert (= (toLower _J_) _j_))
+(assert (= (toLower _K_) _k_))
+(assert (= (toLower _L_) _l_))
+(assert (= (toLower _M_) _m_))
+(assert (= (toLower _N_) _n_))
+(assert (= (toLower _O_) _o_))
+(assert (= (toLower _P_) _p_))
+(assert (= (toLower _Q_) _q_))
+(assert (= (toLower _R_) _r_))
+(assert (= (toLower _S_) _s_))
+(assert (= (toLower _T_) _t_))
+(assert (= (toLower _U_) _u_))
+(assert (= (toLower _V_) _v_))
+(assert (= (toLower _W_) _w_))
+(assert (= (toLower _X_) _x_))
+(assert (= (toLower _Y_) _y_))
+(assert (= (toLower _Z_) _z_))
+
+
+(declare-fun toUpper (Char) Char)
+(assert (= (toUpper _a_) _A_))
+(assert (= (toUpper _b_) _B_))
+(assert (= (toUpper _c_) _C_))
+(assert (= (toUpper _d_) _D_))
+(assert (= (toUpper _e_) _E_))
+(assert (= (toUpper _f_) _F_))
+(assert (= (toUpper _g_) _G_))
+(assert (= (toUpper _h_) _H_))
+(assert (= (toUpper _i_) _I_))
+(assert (= (toUpper _j_) _J_))
+(assert (= (toUpper _k_) _K_))
+(assert (= (toUpper _l_) _L_))
+(assert (= (toUpper _m_) _M_))
+(assert (= (toUpper _n_) _N_))
+(assert (= (toUpper _o_) _O_))
+(assert (= (toUpper _p_) _P_))
+(assert (= (toUpper _q_) _Q_))
+(assert (= (toUpper _r_) _R_))
+(assert (= (toUpper _s_) _S_))
+(assert (= (toUpper _t_) _T_))
+(assert (= (toUpper _u_) _U_))
+(assert (= (toUpper _v_) _V_))
+(assert (= (toUpper _w_) _W_))
+(assert (= (toUpper _x_) _X_))
+(assert (= (toUpper _y_) _Y_))
+(assert (= (toUpper _z_) _Z_))
+
 (declare-fun length ( String ) Int )
 (declare-fun charOf (String Int) Int)
 
+;compare certain index of two strings
 (define-fun compare ((dom String)(sub String)(index Int)) Int
 	(
 		ite(> (charOf dom index) (charOf sub index)) 1
@@ -218,44 +273,3 @@
 			)
 	)
 )
-
-(declare-fun inputString () String)
-(declare-fun staticString () String)
-(declare-fun outputString () String)
-
-
-(assert (= (charOf staticString 0) _a_ ))
-(assert (= (charOf staticString 1) _b_ ))
-(assert (= (charOf staticString 2) _c_ ))
-(assert (= (length staticString) 3))
-
-
-
-
-(assert (= (charOf inputString 0) _a_ ))
-(assert (= (charOf inputString 1) _b_ ))
-(assert (= (charOf inputString 2) _c_ ))
-(assert (= (charOf inputString 3) _d_ ))
-(assert (= (length inputString) 4))
-;(assert (= staticString inputString))
-(check-sat)
-
-
-
-(assert (= (charOf outputString 0) _a_ ))
-(assert (= (charOf outputString 1) _b_ ))
-(assert (= (charOf outputString 2) _c_ ))
-(assert (= (charOf outputString 3) _g_ ))
-(assert (= (charOf outputString 4) _b_ ))
-(assert (= (charOf outputString 5) _c_ ))
-(assert (= (length outputString) 6))
-;(assert(> (charOf staticString 0) (charOf inputString 0)))
-(check-sat)
-(assert (forall ((index Int)) (ite (and (>= index 0) (< index 4)) (= (charOf inputString index) (charOf staticString index) true)))
-(assert (forall ((index Int)) (ite (and (>= index 0) (< index 4)) (= (charOf inputString index) (charOf staticString index)) true)))
-
-
-(check-sat)
-(exit)
-
-
