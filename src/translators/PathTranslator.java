@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import lookups.TypeTable;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -74,8 +76,41 @@ public class PathTranslator {
 	}
 
 
-	private void convert(DeclarationStatContext c) {
+	private void convert(AssignStatContext assign) {
+		if (assign.getChildCount() == 5) {						
+			covertPointerAssgin(assign);
+		}
+					}
+		else if(assign.getChildCount() == 4){
+			convertNonPointerAssign(assign);
+		}
 		
+	}
+
+	private void convertNonPointerAssign(AssignStatContext assign) {
+		String ID = assign.ID().getText();
+		if(!assign.type().isEmpty()){
+			String type = assign.type().getText();
+			String constraint = "(declare-const " + ID + " "
+					+ TypeTable.getInstance().getType(type) + ")";
+			constraints.add(constraint);
+		}
+		String exprConstraint = this.getExpr(assign.expr());
+		String constraint = "(assert (= " + exprConstraint + " " + ID +  "))";
+		this.constraints.add(constraint);
+	}
+
+
+	private void convert(DeclarationStatContext decl) {
+		String type = decl.type().getText();
+		if (decl.getChildCount() == 4) {
+			// char*, treat as a string
+			type = type + '*';
+
+		}
+		String constraint = "(declare-fun " + decl.ID().getText()
+				+ " () " + TypeTable.getInstance().getType(type) + ")";
+		constraints = constraints + constraint + '\n';
 		
 	}
 
