@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import lookups.PointerTable;
 import lookups.TypeTable;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -20,6 +21,7 @@ import antlr.PathParser.DeclarationStatContext;
 import antlr.PathParser.ProgContext;
 import antlr.PathParser.ReturnStatContext;
 import antlr.PathParser.StatementContext;
+import antlr.PathParser.ExprContext;
 
 
 
@@ -80,7 +82,6 @@ public class PathTranslator {
 		if (assign.getChildCount() == 5) {						
 			covertPointerAssgin(assign);
 		}
-					}
 		else if(assign.getChildCount() == 4){
 			convertNonPointerAssign(assign);
 		}
@@ -89,17 +90,21 @@ public class PathTranslator {
 
 	private void convertNonPointerAssign(AssignStatContext assign) {
 		String ID = assign.ID().getText();
-		if(!assign.type().isEmpty()){
-			String type = assign.type().getText();
-			String constraint = "(declare-const " + ID + " "
-					+ TypeTable.getInstance().getType(type) + ")";
-			constraints.add(constraint);
-		}
+		
 		String exprConstraint = this.getExpr(assign.expr());
 		String constraint = "(assert (= " + exprConstraint + " " + ID +  "))";
-		this.constraints.add(constraint);
+		constraints = constraints + constraint + '\n';
 	}
 
+	
+	private void covertPointerAssgin(AssignStatContext assign) {
+		String ID = assign.ID().getText();
+		ExprContext temp = assign.expr();
+		
+		String constraint = "(assert (= ValueOf " + ID + " " + getExpr(temp) + "))";
+		constraints = constraints + constraint + '\n';
+		
+	}
 
 	private void convert(DeclarationStatContext decl) {
 		String type = decl.type().getText();
@@ -121,7 +126,34 @@ public class PathTranslator {
 		//System.out.println(path);
 	}
 	
-	
+	private String getExpr(ExprContext expr) {
+		// float, int, char, char*
+		if (expr.getChildCount() == 1) {
+			if (expr.ID() != null || expr.FLOAT() != null || expr.INT() != null) {
+				return expr.getText().toString();
+			} else {
+				if (expr.StringLiteral() != null) {
+					String content = expr.StringLiteral().getText();
+					content = content.substring(1, content.length() - 1);
+					return content;
+				} else if (expr.CharacterLiteral() != null) {
+					int value = 0;
+					char c = expr.CharacterLiteral().getText().charAt(1);
+					if(Character.isDigit(c)){
+						value = c - '0';
+					}else if(Character.isLetter(c)){
+						value = c;
+					}
+					return Integer.toString(value);
+				}
+			}
+
+		} else {
+			return "(" + expr.getChild(1).getText() + " "
+					+ getExpr(expr.expr(0)) + " " + getExpr(expr.expr(1)) + ")";
+		}
+		return output;
+	}
 	
 
 }
