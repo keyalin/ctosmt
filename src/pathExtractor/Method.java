@@ -10,12 +10,14 @@ public class Method {
 	String name;
 	List<String> path;
 	Map<String, String> pathToInput;
+	Map<String, String> pathToConstraint;
 	
 	public Method(){
 		source = null;
 		name = null;
 		path = new ArrayList<String>();
 		pathToInput = new HashMap<String, String>();
+		pathToConstraint = new HashMap<String, String>();
 	}
 	public String getSource() {
 		return source;
@@ -40,6 +42,12 @@ public class Method {
 	}
 	public void setPathToInput(Map<String, String> pathToInput) {
 		this.pathToInput = pathToInput;
+	}
+	public Map<String, String> getPathToConstraint() {
+		return pathToConstraint;
+	}
+	public void setPathToConstraint(Map<String, String> pathToConstraint) {
+		this.pathToConstraint = pathToConstraint;
 	}
 	
 	

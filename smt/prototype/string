@@ -203,7 +203,7 @@
 (assert (= _rcurly_ 125))
 (assert (= _tilde_ 126))
 
-(declare-fun toLower (Char) Char)
+(declare-fun toLower (Int) Int)
 (assert (= (toLower _A_) _a_))
 (assert (= (toLower _B_) _b_))
 (assert (= (toLower _C_) _c_))
@@ -232,7 +232,7 @@
 (assert (= (toLower _Z_) _z_))
 
 
-(declare-fun toUpper (Char) Char)
+(declare-fun toUpper (Int) Int)
 (assert (= (toUpper _a_) _A_))
 (assert (= (toUpper _b_) _B_))
 (assert (= (toUpper _c_) _C_))

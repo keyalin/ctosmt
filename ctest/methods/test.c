@@ -16,10 +16,10 @@ int test1(int a){
 	return d;
 }
 
-int test2(char a){
+int test2(int a){
 	int b = 0;
 	int c = 0;
-	int* p = &b;
+	int* p = &a;
 	//char* s = "abc";
 	if(a < 3){
 		b = a + 1;

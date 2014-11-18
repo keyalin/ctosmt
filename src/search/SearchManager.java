@@ -1,34 +1,133 @@
 package search;
 
 
-import java.sql.Connection;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import test.Test;
+import lookups.ClassType;
 import db.DataBaseManager;
 
 public class SearchManager {
 	
-	private static String SEARCHURL = "select * from srcConstraints";
+	private static String SEARCHURL = "select * from srcConstraints;";
 	
-	public static String[] search(Object[] input, Object output) throws SQLException{
+	public  static List<String> search(Object[] input, Object output) throws SQLException, IOException{
+		List<String> finding = new ArrayList<String>();
 		DataBaseManager.connect();
 		ResultSet result = DataBaseManager.query(SEARCHURL);
 		while(result.next()){
-			String[] input1 = result.getString(4).split("\n");
-			if(input1.length != input.length){
+			String[] input1 = result.getString(5).split("\n");
+			if(input1.length != input.length || !CheckInputType(input1, input)){
 				continue;
 			}
-			String[] constraints = result.getString(3).split("\n");
-			addResultToconstraints(input, output, constraints, input1);
+//			String[] constraints = result.getString(3).split("\n");
+//			addResultToconstraints(input, output, constraints, input1);
+			System.out.println(result.getString(3));
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ctest/test/temp")));
+			loadPrototype(bw);
+			String constraint = result.getString(4);
+			List<String> searchOver = loadInputAndOutput(constraint, input1, input, output);
+			loadSearchOver(bw, searchOver);
+			bw.close();
+			String res = Test.invokeZ3onFile("ctest/test/temp");
+			if(res.equals("sat")){
+				finding.add(result.getString(3));
+			}
 		}
-		return null;
+		return finding;
 	}
+	
+	private static void loadSearchOver(BufferedWriter bw,
+			List<String> searchOver) throws IOException {
+		for(String s : searchOver){
+			System.out.println(s);
+			bw.write(s);
+			bw.write('\n');
+		}
+		
+	}
+
+	private  static List<String> loadInputAndOutput(String constraint, String[] input1, Object[] input,
+			Object output) {
+		String[] constraints = constraint.split("\n");
+		List<String> result = new ArrayList<String>();
+		for(int i = 0; i < input1.length; i++){
+			result.add(constraints[i]);
+			String[] args = input1[i].split(" ");
+			String classType2 = input[i].getClass().getSimpleName();
+			
+			if(classType2.equals("Integer")){
+				String temp = "(assert(= " + args[1] + " " + input[i] + "))";
+				result.add(temp);
+			}
+		}
+		
+		for(int i = input1.length; i < constraints.length; i++){
+			result.add(constraints[i]);
+		}
+		
+		String outputCon = "(assert(= _output_ " + output + "))";
+		result.add(outputCon);
+		result.add("(check-sat)");
+		return result;
+	}
+
+	//check type 
+	
+	private static void loadPrototype(BufferedWriter bw) throws IOException {
+		File dir = new File("smt/prototype");
+		for(File file : dir.listFiles()){
+			if(file.isFile()){
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+				String s;
+				while((s = br.readLine()) != null){
+					bw.write(s);
+					bw.write('\n');
+				}
+				br.close();
+			}
+		}
+		
+	}
+
+	private static boolean CheckInputType(String[] input1, Object[] input2){
+		for(int i = 0; i < input1.length; i++){
+			String[] args = input1[i].split(" ");
+			
+			String classType1 = ClassType.getInstance().getType(args[0]);
+			String classType2 = input2[i].getClass().getSimpleName();
+			if(!classType1.equals(classType2)) return false;
+		}
+		return true;
+	}
+
 
 	private static void addResultToconstraints(Object[] input, Object output,
 			String[] constraints, String[] input1) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public  static  void main(String[] args) throws SQLException, IOException{
+		Integer[] input = new Integer[]{2};
+		String[] input1 = new String[]{"int a", "int b"};
+		//System.out.println(CheckInputType(input1, input));
+		List<String> result = search(input, 4);
+		
+		for(String s : result){
+			System.out.println(s);
+		}
 	}
 
 }

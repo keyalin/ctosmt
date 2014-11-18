@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import lookups.PointerTable;
 import lookups.TypeTable;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -15,13 +14,15 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import utility.Utility;
 import antlr.PathLexer;
 import antlr.PathParser;
+import antlr.PathParser.AddressExprContext;
 import antlr.PathParser.AssignStatContext;
 import antlr.PathParser.AssumeStatContext;
 import antlr.PathParser.DeclarationStatContext;
+import antlr.PathParser.DefExprContext;
+import antlr.PathParser.ExprContext;
 import antlr.PathParser.ProgContext;
 import antlr.PathParser.ReturnStatContext;
 import antlr.PathParser.StatementContext;
-import antlr.PathParser.ExprContext;
 
 
 
@@ -32,10 +33,37 @@ public class PathTranslator {
 		this.path = path;
 		constraints = "";
 		translate();
+		//System.out.println(constraints);
 	}
 	
 	
+	
+	public String getPath() {
+		return path;
+	}
+
+
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+
+
+	public String getConstraints() {
+		return constraints;
+	}
+
+
+
+	public void setConstraints(String constraints) {
+		this.constraints = constraints;
+	}
+
+
+
 	private void translate(){
+		System.out.println(path);
 		InputStream stream = new ByteArrayInputStream(path.getBytes());
 		try {
 			ANTLRInputStream input = new ANTLRInputStream(stream);
@@ -45,6 +73,7 @@ public class PathTranslator {
 			ProgContext prog = parser.prog();
 			List<StatementContext> statements = prog.statement();
 			convertStatementToConstraints(statements);
+			
 		} catch (IOException e) {
 			//
 			e.printStackTrace();
@@ -52,8 +81,7 @@ public class PathTranslator {
 	}
 	
 	private void convertStatementToConstraints(List<StatementContext> statements) {
-		for(StatementContext s : statements){
-			for (StatementContext statement : statements) {
+		for(StatementContext statement : statements){
 				for (int i = 0; i < statement.getChildCount(); i++) {
 					ParseTree child = statement.getChild(i);
 					if (child instanceof DeclarationStatContext) {
@@ -73,8 +101,26 @@ public class PathTranslator {
 				}
 
 			}
-		}
 		
+	}
+
+
+	private void convert(AssumeStatContext assum) {
+		//System.out.println(assum);
+		String operator = assum.comparator().getText();
+		String leftExpr = this.getExpr(assum.expr(0));
+		String rightExpr = this.getExpr(assum.expr(1));
+		String constraint = "(assert( " + operator + " " + leftExpr + " " + rightExpr +  " ))";
+		constraints = constraints + constraint + '\n';
+	}
+
+
+	private void convert(ReturnStatContext ret) {
+		String output = ret.getChild(2).getText();
+		String constraint = "(declare-const _output_ Int)";
+		constraints = constraints + constraint + '\n';
+		constraint = "(assert (= _output_ " + output +  "))";
+		constraints = constraints + constraint + '\n';
 	}
 
 
@@ -101,7 +147,7 @@ public class PathTranslator {
 		String ID = assign.ID().getText();
 		ExprContext temp = assign.expr();
 		
-		String constraint = "(assert (= ValueOf " + ID + " " + getExpr(temp) + "))";
+		String constraint = "(assert (= valueOf " + ID + " " + getExpr(temp) + "))";
 		constraints = constraints + constraint + '\n';
 		
 	}
@@ -127,25 +173,18 @@ public class PathTranslator {
 	}
 	
 	private String getExpr(ExprContext expr) {
+		String output = "";
 		// float, int, char, char*
 		if (expr.getChildCount() == 1) {
 			if (expr.ID() != null || expr.FLOAT() != null || expr.INT() != null) {
 				return expr.getText().toString();
-			} else {
-				if (expr.StringLiteral() != null) {
-					String content = expr.StringLiteral().getText();
-					content = content.substring(1, content.length() - 1);
-					return content;
-				} else if (expr.CharacterLiteral() != null) {
-					int value = 0;
-					char c = expr.CharacterLiteral().getText().charAt(1);
-					if(Character.isDigit(c)){
-						value = c - '0';
-					}else if(Character.isLetter(c)){
-						value = c;
-					}
-					return Integer.toString(value);
-				}
+			} else if(expr.defExpr() != null){
+				DefExprContext def = expr.defExpr();
+				output = "(valueOf + " + def.ID() +")";
+			}
+			else if(expr.addressExpr() != null){
+				AddressExprContext add = expr.addressExpr();
+				output = "(addressOf " + add.ID() + ")";
 			}
 
 		} else {

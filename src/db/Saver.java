@@ -2,10 +2,38 @@ package db;
 
 import java.sql.PreparedStatement;
 
+import pathExtractor.Method;
 import translators.MethodTranslator;
 import utility.Utility;
 
 public class Saver {
+	
+	
+	public static void save(Method method){
+		DataBaseManager.connect(DataBaseManager.USER, DataBaseManager.PASSWORD, DataBaseManager.DATABASE);
+		for(String path : method.getPath()){
+			String methodName = method.getName();
+			String source = method.getSource();
+			String constraints = method.getPathToConstraint().get(path);
+			String input = method.getPathToInput().get(path);
+			System.out.println("-----input-----");
+			System.out.println(input);
+			String sql = "insert into srcConstraints (path, source, methodName, constraints, input) " +
+					"values(?, ?, ?, ?, ?)";
+			PreparedStatement  statement = null;
+			try{
+				statement = DataBaseManager.conn.prepareStatement(sql);
+				statement.setString(1, path);
+				statement.setString(2, source);
+				statement.setString(3, methodName);
+				statement.setString(4, constraints);
+				statement.setString(5, input);
+				statement.execute();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public static void save(String source){
 		MethodTranslator method = new MethodTranslator(source);

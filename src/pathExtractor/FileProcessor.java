@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.DataBaseManager;
+import db.Saver;
+import translators.PathTranslator;
+
 public class FileProcessor {
 	private String fileName;
 	private List<Method> methods;
@@ -14,13 +18,35 @@ public class FileProcessor {
 		this.fileName = fileName;
 		methods = new ArrayList<Method>();
 		parse();
+		traslate();
+		save();
 	}
 	
+	private void save() {
+		for(Method m : methods){
+			Saver.save(m);
+		}
+		
+	}
+
+	private void traslate() {
+		for(Method m : methods){
+			for(String path : m.getPath())
+			{
+				PathTranslator pt = new PathTranslator(path);
+				m.getPathToConstraint().put(path, pt.getConstraints());
+			}
+		}
+		
+	}
+
 	public void print(){
 		for(Method m : methods){
-			System.out.println(m.getName());
-			System.out.println(m.getPathToInput().get(m.getPath().get(0)));
-			System.out.println(m.getPath().get(0));
+			System.out.println("method " + m.getName());
+			for(String path : m.getPath()){
+				System.out.println("-------");
+				System.out.println(m.getPathToInput().get(path));
+			}
 		}
 	}
 	
@@ -40,12 +66,8 @@ public class FileProcessor {
 				s = s.trim();
 				if(s.startsWith("Processing:")){
 					if(method.getName() != null){
-						method.getPath().add(path.toString());
-						method.getPathToInput().put(path.toString(), input.toString());
 						methods.add(method);
-						method = new Method();
-						path = new StringBuilder();
-						input = new StringBuilder();
+						method = new Method();						
 					}
 					method.setName(s.substring(12));
 				}
@@ -69,6 +91,11 @@ public class FileProcessor {
 				else if(s.startsWith("STMT(return")){
 					path.append(s.substring(5, s.length() - 1));
 					path.append("\n");
+					
+					method.getPath().add(path.toString());
+					method.getPathToInput().put(path.toString(), input.toString());					
+					path = new StringBuilder();
+					input = new StringBuilder();
 				}
 				else if(s.equals("Paths:") || s.startsWith("path_enumeration")){
 					continue;
@@ -92,6 +119,9 @@ public class FileProcessor {
 					path.append(";");
 					path.append("\n");
 				}
+				else if(s.startsWith("Number of")){
+					continue;
+				}
 				else {
 					path.append(s);
 					path.append("\n");
@@ -99,8 +129,6 @@ public class FileProcessor {
 			}
 			if(method.getName() != null)
 			{
-				method.getPath().add(path.toString());
-				method.getPathToInput().put(path.toString(), input.toString());
 				methods.add(method);
 			}
 			ls_in.close();

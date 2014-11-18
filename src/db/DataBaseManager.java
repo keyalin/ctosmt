@@ -100,11 +100,6 @@ public class DataBaseManager {
 			}
 		}catch(Exception e){
 			return null;
-		}finally{
-			try {
-				conn.close();
-			} catch (SQLException e) {
-			}
 		}
 	}
 	

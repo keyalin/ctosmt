@@ -138,7 +138,7 @@ public class Test {
 	@org.junit.Test
 	public void test4()
 	{
-		System.out.println(invokeZ3onFile("CSMT/test1.smt"));
+		System.out.println(invokeZ3onFile("CSMT/test.smt"));
 	}
 	
 	public static String invokeZ3onFile(String file) {
@@ -152,6 +152,8 @@ public class Test {
 
 			BufferedReader ls_in = new BufferedReader(new InputStreamReader(
 					ls_proc.getInputStream()));
+//			BufferedReader ls_err = new BufferedReader(new InputStreamReader(
+//					ls_proc.get));
 
 			long now = System.currentTimeMillis();
 			long timeoutInMillis = 100L * 10; // timeout in seconds
@@ -170,6 +172,10 @@ public class Test {
 					sb.append(ls_str);
 					// System.out.println(ls_str);
 				}
+//				while((ls_str = ls_err.readLine()) != null){
+//					System.out.println(ls_str+ "j");
+//					sb.append(ls_str);
+//				}
 			} catch (IOException e) {
 				out = sb.toString();
 				// System.exit(0);
