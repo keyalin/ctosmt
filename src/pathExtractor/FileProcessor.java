@@ -19,16 +19,16 @@ public class FileProcessor {
 	public void print(){
 		for(Method m : methods){
 			System.out.println(m.getName());
-			System.out.println(m.getPathToInput().values());
+			System.out.println(m.getPathToInput().get(m.getPath().get(0)));
 			System.out.println(m.getPath().get(0));
 		}
 	}
 	
 	private void parse(){
 		try {
-			String com = "./PathExtractor/pathgen " + fileName + " ucFirst";
+			String com = "./PathExtractor/pathgen " + fileName;
 
-			Process p = Runtime.getRuntime().exec(com);
+ 			Process p = Runtime.getRuntime().exec(com);
 			BufferedReader ls_in = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 			String s;
@@ -62,6 +62,9 @@ public class FileProcessor {
 				else if(s.startsWith("FORMAL")){
 					input.append(s.substring(7, s.length() - 1));
 					input.append("\n");
+					path.append(s.substring(7, s.length() - 1));
+					path.append(";");
+					path.append("\n");
 				}
 				else if(s.startsWith("STMT(return")){
 					path.append(s.substring(5, s.length() - 1));
@@ -99,7 +102,6 @@ public class FileProcessor {
 				method.getPath().add(path.toString());
 				method.getPathToInput().put(path.toString(), input.toString());
 				methods.add(method);
-				methods.add(method);
 			}
 			ls_in.close();
 		} catch (IOException e) {
@@ -110,7 +112,7 @@ public class FileProcessor {
 	}
 
 	public static void main(String[] args){
-		FileProcessor processor = new FileProcessor("ctest/methods/functions.c");
+		FileProcessor processor = new FileProcessor("ctest/methods/test.c");
 		processor.print();
 	}
 

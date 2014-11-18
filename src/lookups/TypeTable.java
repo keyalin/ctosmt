@@ -17,7 +17,7 @@ public class TypeTable {
 		map = new HashMap<String, String>();
 		map.put("int", "Int");
 		map.put("char[]", "String");
-		map.put("char", "Char");
+		map.put("char", "Int");
 		map.put("float", "Real");
 		map.put("float*", "FloatPointer");
 		map.put("int*", "IntPointer");

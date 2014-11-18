@@ -16,3 +16,9 @@
 /pathLexer.tokens
 /pathListener.java
 /pathParser.java
+/Path.tokens
+/PathBaseListener.java
+/PathLexer.java
+/PathLexer.tokens
+/PathListener.java
+/PathParser.java

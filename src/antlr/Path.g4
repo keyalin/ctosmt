@@ -1,4 +1,4 @@
-grammar path;
+grammar Path;
 
 prog : statement*;
 
@@ -7,7 +7,6 @@ statement
 	: declarationStat
 	| assignStat
 	| returnStat
-	| exprStat
 	| assumeStat
 	; 
 
@@ -16,24 +15,19 @@ assumeStat
 	;
 	
 declarationStat
-	: type ('[' INT ']') ID  ';'
-	| type '*' ID ';'
+	: type '*' ID ';'
 	| type ID ';'
 	;
 
 assignStat
 	: ID '=' expr  ';'
-	| '*' ID '=' (expr | StringLiteral) ';'
+	| '*' ID '=' expr  ';'
 	;
 	
 returnStat
-	: 'return' '('ID | INT | FLOAT ')' ';'
+	: 'return' '('(ID | INT | FLOAT )');'
 	;
 	
-exprStat
-	: CallExpr ';'
-	| expr ';'
-	;
 
 expr 
 	: ID 
@@ -43,9 +37,12 @@ expr
 	| FLOAT
 	| CharacterLiteral
 	| StringLiteral
+	| addressExpr
+	| defExpr
 	;
 	
-Address: '&' ID;
+addressExpr: '&' ID;
+defExpr : '*' ID;
 
 	
 
@@ -79,7 +76,8 @@ comparator
 	| '>='
 	| '<'
 	| '<='
-	| '='
+	| '=='
+	| '!='
 	;
 
 Int : 'int';

@@ -110,12 +110,12 @@ public class DataBaseManager {
 	
 	public static void main(String[] args){
 		connect("root", "3125703", "test");
-		String createTableURL = "create table srcConstraints (source text, path text, constraints text, input varchar(100))";
-		String dropTableURL = "drop table srcConstraints";
+		String createTableURL = "create table srcConstraints ( path text, source text, methodName varchar(50), constraints text, input varchar(200))";
+		
 		System.out.println(DataBaseManager.createTable(createTableURL));
-		Object a = 1;
-		System.out.println(a);
-		System.out.println(a.getClass().getName());
+		
+//		String dropTableURL = "drop table srcConstraints";
+//		System.out.println(DataBaseManager.delete(dropTableURL));
 	}
 
 

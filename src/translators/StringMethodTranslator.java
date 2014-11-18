@@ -129,7 +129,7 @@ public class StringMethodTranslator {
 	}
 	
 	//char *strchr(const char *str, int c)
-	
+	//
 	public static List<String> getStrchrConstratints(String src, String srcContent, int c){
 		String output = "_" + src + "_" + count++;
 		StringReturnTable.getInstance().set(src, output);
