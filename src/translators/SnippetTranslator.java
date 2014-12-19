@@ -65,19 +65,22 @@ public class SnippetTranslator {
 	private void convertStatementToConstraints(List<StatementContext> statements) {
 		for (StatementContext statement : statements) {
 			for (int i = 0; i < statement.getChildCount(); i++) {
+				
 				ParseTree child = statement.getChild(i);
+				
 				if (child instanceof DeclarationStatContext) {
-					DeclarationStatContext c = (DeclarationStatContext) child;
-					convert(c);
+					
+					continue;
 				} else if (child instanceof AssignStatContext) {
+					System.out.println("d" + child.getText());
 					AssignStatContext c = (AssignStatContext) child;
 					convert(c);
 				} else if (child instanceof ReturnStatContext) {
+					System.out.println("c" + child.getText());
 					ReturnStatContext c = (ReturnStatContext) child;
 					convert(c);
 				} else if (child instanceof ExprStatContext) {
-					ExprStatContext c = (ExprStatContext) child;
-					convert(c);
+					continue;
 				}
 
 			}

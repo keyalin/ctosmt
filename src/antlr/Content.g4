@@ -1,45 +1,43 @@
-grammar Path;
+grammar Content;
 
 prog : statement*;
-
-
+	
 statement
-	: declarationStat
-	| assignStat
-	| returnStat
-	| assumeStat
-	| callStat
+	: declarationStat ';'
+	| assignStat ';'
+	| returnStat ';'
+	| callStat ';'
 	;
 	
-callStat
-	: callExpr
-	;
-	
-
- 
-
-assumeStat
-	: expr comparator expr ';'
+type
+	: Int
+	| Char
+	| Float
 	;
 	
 declarationStat
-	: type '*' ID ';'
-	| type ID ';'
+	: type pointerTag ID 
+	| type ID 
 	;
 
 assignStat
-	: ID '=' expr  ';'
-	| '*' ID '=' expr  ';'
-	| ID '=' callExpr ';'
+	: ID assignOperater expr
+	| type ID assignOperater expr
+	| pointerTag ID assignOperater expr
+	| type pointerTag ID assignOperater expr
 	;
 	
 	
 	
 returnStat
-	: 'return' '('(ID | INT | FLOAT )');'
+	: 'return' (ID | INT | FLOAT )
+	;
+
+callStat
+	: callExpr
 	;
 	
-
+	
 expr 
 	: ID 
 	| INT
@@ -50,6 +48,7 @@ expr
 	| StringLiteral
 	| addressExpr
 	| defExpr
+	| callExpr
 	;
 	
 addressExpr: '&' ID;
@@ -60,13 +59,17 @@ defExpr : '*' ID;
 
 
 	
-callExpr : ID '(' (ID | FLOAT | INT )* ')';
+callExpr : ID arguments;
 
-type
-	: Int
-	| Char
-	| Float
+arguments:
+	'(' (formalArgument(',' formalArgument)*)? ')';
+
+formalArgument
+	: ID
+	| FLOAT
+	| INT
 	;
+
 
 	
 	
@@ -81,6 +84,9 @@ multiOperater
 	| '/'
 	| '%'
 	;
+
+assignOperater : '=';
+pointerTag : '*';
 
 comparator
 	: '>'
@@ -112,8 +118,9 @@ CharacterLiteral
 	
 	
 StringLiteral
-	: '"' (Character)* '"' 
+	: StringTag (Character)* StringTag 
 	;
 
+StringTag : '"';
 
-Character : [0-9|a-z|A-Z];
+Character : [0-9|a-z|A-Z|_|'|'|'^'];

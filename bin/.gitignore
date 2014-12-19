@@ -1,7 +1,4 @@
-/translators
-/pathExtractor
 /antlr
-/lookups
-/test
-/db
+/translators
 /search
+/db

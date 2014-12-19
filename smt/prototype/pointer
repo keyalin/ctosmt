@@ -6,3 +6,5 @@
 
 (declare-fun addressOf (IntPointer) Int)
 (declare-fun addressOf (FloatPointer) Real)
+(declare-fun addressOf (Int) IntPointer)
+(declare-fun addressOf (Real) FloatPointer)

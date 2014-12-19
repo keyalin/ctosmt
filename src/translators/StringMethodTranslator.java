@@ -149,8 +149,8 @@ public class StringMethodTranslator {
 	
 	public static void main(String[] args){
 		//System.out.print(getStrcmpConstraints("inputString", "abcd", "staticString", "abc"));
-		System.out.println(getstrncpyConstraints("inputString", "staticString", 4).get(0));
-		System.out.println(getstrncpyConstraints("inputString", "staticString", 4).get(1));
+		System.out.println(getStrcmpConstraints("inputString", "abc", "staticString", "abcd"));
+		//System.out.println(getstrncpyConstraints("inputString", "staticString", 4).get(1));
 	}
 	
 	//char *strcpy(char *dest, const char *src)

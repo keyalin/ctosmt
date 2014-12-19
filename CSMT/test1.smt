@@ -219,6 +219,10 @@
 	)
 )
 
+(declare-fun foo () String)
+
+(assert (= (charOf foo 0) _a_ ))
+
 (declare-fun inputString () String)
 (declare-fun staticString () String)
 (declare-fun outputString () String)

@@ -17,6 +17,7 @@ import antlr.PathParser;
 import antlr.PathParser.AddressExprContext;
 import antlr.PathParser.AssignStatContext;
 import antlr.PathParser.AssumeStatContext;
+import antlr.PathParser.CallStatContext;
 import antlr.PathParser.DeclarationStatContext;
 import antlr.PathParser.DefExprContext;
 import antlr.PathParser.ExprContext;
@@ -96,6 +97,9 @@ public class PathTranslator {
 					} else if (child instanceof AssumeStatContext) {
 						AssumeStatContext c = (AssumeStatContext) child;
 						convert(c);
+					} else if(child instanceof CallStatContext){
+						CallStatContext c = (CallStatContext) child;
+						convert(c);
 					}
 
 				}
@@ -105,12 +109,28 @@ public class PathTranslator {
 	}
 
 
+	private void convert(CallStatContext c) {
+		
+		
+	}
+
+
+
 	private void convert(AssumeStatContext assum) {
 		//System.out.println(assum);
 		String operator = assum.comparator().getText();
 		String leftExpr = this.getExpr(assum.expr(0));
 		String rightExpr = this.getExpr(assum.expr(1));
-		String constraint = "(assert( " + operator + " " + leftExpr + " " + rightExpr +  " ))";
+		String constraint = "";
+		if(operator.equals("!=")){
+			constraint = "(assert(not (= " + leftExpr +" "+ rightExpr + ")))";
+		}
+		if(operator.equals("==")){
+			constraint = "(assert(= " + leftExpr +" "+ rightExpr + "))";
+		}
+		else{
+			constraint = "(assert( " + operator + " " + leftExpr + " " + rightExpr +  " ))";
+		}
 		constraints = constraints + constraint + '\n';
 	}
 
@@ -180,7 +200,7 @@ public class PathTranslator {
 				return expr.getText().toString();
 			} else if(expr.defExpr() != null){
 				DefExprContext def = expr.defExpr();
-				output = "(valueOf + " + def.ID() +")";
+				output = "(valueOf " + def.ID() +")";
 			}
 			else if(expr.addressExpr() != null){
 				AddressExprContext add = expr.addressExpr();

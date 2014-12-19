@@ -18,10 +18,16 @@ public class FileProcessor {
 		this.fileName = fileName;
 		methods = new ArrayList<Method>();
 		parse();
+		applySSA();
 		traslate();
 		save();
 	}
 	
+	private void applySSA() {
+		
+		
+	}
+
 	private void save() {
 		for(Method m : methods){
 			Saver.save(m);

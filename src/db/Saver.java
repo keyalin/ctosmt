@@ -1,8 +1,10 @@
 package db;
 
 import java.sql.PreparedStatement;
+import java.util.Map;
 
 import pathExtractor.Method;
+import search.SQLObject;
 import translators.MethodTranslator;
 import utility.Utility;
 
@@ -34,6 +36,33 @@ public class Saver {
 			}
 		}
 	}
+	
+	public static void save(SQLObject object){
+		DataBaseManager.connect(DataBaseManager.USER, DataBaseManager.PASSWORD, DataBaseManager.DATABASE);
+			String source = object.getSource();
+			String constraint = object.getConstraints();
+			String variables = formatInput(object.getVariableTrack());
+			String sql = "insert into prototype (source, constraints, variable) " +
+					"values(?, ?, ?)";
+			PreparedStatement  statement = null;
+			try{
+				statement = DataBaseManager.conn.prepareStatement(sql);
+				statement.setString(1, source);
+				statement.setString(2, constraint);
+				statement.setString(3, variables);
+				statement.execute();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	private static String formatInput(Map<String, String> variableTrack) {
+		String input = "";
+		for(String s : variableTrack.keySet()){
+			input = input + s + ":" + variableTrack.get(s) + "\n";
+		}
+		return input;
+	}
+
 	
 	public static void save(String source){
 		MethodTranslator method = new MethodTranslator(source);

@@ -6,18 +6,38 @@ import java.util.List;
 import java.util.Map;
 
 public class Method {
-	String source;
-	String name;
-	List<String> path;
-	Map<String, String> pathToInput;
-	Map<String, String> pathToConstraint;
+	private String source;
+	private String name;
+	private List<String> path;
+	private Map<String, String> pathToInput;
+	private Map<String, String> pathToConstraint;
+	private Map<String, String> inputTransform;
+	private static int number = 1;
+	private String prefix;
 	
+	
+	
+	public Map<String, String> getInputTransform() {
+		return inputTransform;
+	}
+	public void setInputTransform(Map<String, String> inputTransform) {
+		this.inputTransform = inputTransform;
+	}
+	public String getPrefix() {
+		return prefix;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
 	public Method(){
 		source = null;
 		name = null;
 		path = new ArrayList<String>();
 		pathToInput = new HashMap<String, String>();
 		pathToConstraint = new HashMap<String, String>();
+		inputTransform = new HashMap<String, String>();
+		number++;
+		prefix = name + number;
 	}
 	public String getSource() {
 		return source;

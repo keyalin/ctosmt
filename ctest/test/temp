@@ -6,6 +6,8 @@
 
 (declare-fun addressOf (IntPointer) Int)
 (declare-fun addressOf (FloatPointer) Real)
+(declare-fun addressOf (Int) IntPointer)
+(declare-fun addressOf (Real) FloatPointer)
 (declare-sort String 0)
 
 (declare-fun _a_ () Int)
@@ -281,11 +283,15 @@
 			)
 	)
 )
+
+
 (declare-fun a () Int)
 (assert(= a 2))
+(declare-fun b () Int)
+(assert(= b 2))
 (declare-fun c () Int)
-(assert (= (* 2 a) c))
+(assert (= (/ a b) c))
 (declare-const _output_ Int)
 (assert (= _output_ c))
-(assert(= _output_ 4))
+(assert(= _output_ 0))
 (check-sat)
