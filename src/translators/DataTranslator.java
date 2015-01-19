@@ -104,6 +104,9 @@ public class DataTranslator {
 			}
 
 		} else {
+			if(expr.expr().size() == 1){
+				return getExpr(variables, expr.expr(0));
+			}
 			return "(" + expr.getChild(1).getText() + " "
 					+ getExpr(variables, expr.expr(0)) + " " + getExpr(variables, expr.expr(1)) + ")";
 		}
@@ -132,6 +135,6 @@ public class DataTranslator {
 	public static void main(String[] args){
 		String snippet = Utility.getStringFromFile("Prototype/Database");
 		DataTranslator translator = new DataTranslator(snippet);
-		//translator.print();
+		translator.print();
 	}
 }

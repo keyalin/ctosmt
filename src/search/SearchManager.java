@@ -53,7 +53,7 @@ public class SearchManager {
 		return finding;
 	}
 	
-	public static String search(SSATranslator translator){
+	public static List<String> search(SSATranslator translator) throws SQLException{
 		DataBaseManager.connect();
 		ResultSet result = DataBaseManager.query(SEARCHPROTOTYPE);
 		List<String> list = new ArrayList<String>();
@@ -87,7 +87,7 @@ public class SearchManager {
 //				finding.add(result.getString(3));
 //			}
 		}
-		return finding;
+		return list;
 	}
 	
 	private static void loadVariableFromInput(BufferedWriter bw, String input) throws IOException {

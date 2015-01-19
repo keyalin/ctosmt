@@ -27,6 +27,7 @@ expr
 	| expr multiOperater expr
 	| expr  addictiveOperator expr
 	| FLOAT
+	| '(' expr ')'
 	;
 	
 callExpr : ID arguments;
