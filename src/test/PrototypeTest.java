@@ -24,15 +24,51 @@ public class PrototypeTest {
 	@org.junit.Test
 	public void test2() throws SQLException, IOException{
 		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case2");
-		info.print();
 		PrototypeSearch.search(info);
 		for(String s : info.getResult()){
 			System.out.println(s);
-		}		
+		}
+	}
+	
+	@org.junit.Test
+	public void test3() throws SQLException, IOException{
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case3");
+		PrototypeSearch.search(info);
+		for(String s : info.getResult()){
+			System.out.println(s);
+		}
+	}
+	
+	@org.junit.Test
+	public void test4() throws SQLException, IOException{
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case4");
+		PrototypeSearch.search(info);
+		for(String s : info.getResult()){
+			System.out.println(s);
+		}
+	}
+	
+	@org.junit.Test
+	public void test5() throws SQLException, IOException{
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case5");
+		PrototypeSearch.search(info);
+		for(String s : info.getResult()){
+			System.out.println(s);
+		}
+	}
+	
+	@org.junit.Test
+	public void test6() throws SQLException, IOException{
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case6");
+		PrototypeSearch.search(info);
+		for(String s : info.getResult()){
+			System.out.println(s);
+		}
 	}
 	
 	public static CaseInfo parse(String fileName){
 		CaseInfo info = new CaseInfo();
+		String type = null;
 		try{
 			boolean positive = false;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
@@ -50,12 +86,20 @@ public class PrototypeTest {
 				else if(sb.startsWith("input state:")){
 					List<String> input = new ArrayList<String>();
 					List<String> output = new ArrayList<String>();
-					for(String i : sb.substring(12).split(" ")){
+					String[] elems = sb.substring(12).split(",");
+					for(String i : elems){
+						if(i.equals("")) continue;
 						input.add(i);
+						
 					}
+					//input
 					sb = reader.readLine().trim();
-					for(String o : sb.substring(13).split(" ")){
+					for(String o : sb.substring(13).split(",")){
 						output.add(o);
+						if(type == null){
+							type = o.split(" ")[2];
+							info.setType(type);
+						}
 					}
 					if(positive){
 						info.getPositives().put(input, output);
@@ -78,7 +122,7 @@ public class PrototypeTest {
 	
 	
 	public static void main(String[] args){
-		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case1");
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case5");
 		info.print();
 	}
 }

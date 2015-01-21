@@ -106,7 +106,7 @@ public class DataBaseManager {
 	public static void main(String[] args){
 		connect("root", "3125703", "test");
 		String createTableURL = "create table srcConstraints ( path text, source text, methodName varchar(50), constraints text, input varchar(200))";
-		String url = "create table prototype (source text, constraints text, variable text)";
+		String url = "create table prototype (source text, constraints text, variable text, introduced text, type text)";
 		System.out.println(DataBaseManager.createTable(url));
 		
 //		String dropTableURL = "drop table srcConstraints";

@@ -1,0 +1,16 @@
+Positive:
+input state:a 0 float,b 0 float
+output state:a 0 float,b 0 float,c 0 float
+Negative:
+input state:a 1 float,b 1 float
+output state:a 1 float,b 1 float,c 2 float
+input state:a 2 float,b 2 float 
+output state:a 2 float,b 2 float,c 4 float
+buggy line:
+float c = a + b;
+
+float test1(float a float b){
+	float c = a + b;
+	c = c + 2;
+	return c;
+}

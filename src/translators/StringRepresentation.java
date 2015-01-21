@@ -9,11 +9,11 @@ import java.util.List;
  * @author yke
  *
  */
-public class StringRepresetation {
+public class StringRepresentation {
 	private String name;
 	private String content;
 	private List<String> constraints;
-	public StringRepresetation(String name, String content){
+	public StringRepresentation(String name, String content){
 		this.name = name;
 		this.content = content;
 		constraints = new ArrayList<String>();
@@ -105,9 +105,9 @@ public class StringRepresetation {
 	}
 	
 	public static void main(String[] args){
-		//StringRepresetation g = new StringRepresetation("p", "ab\\cd34");
-		//System.out.println(g);
-		getCharToInt();
+		StringRepresentation g = new StringRepresentation("p", "ab\\cd34");
+		System.out.println(g);
+//		getCharToInt();
 	}
 	
 	

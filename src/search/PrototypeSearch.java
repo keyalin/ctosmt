@@ -10,8 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lookups.TypeTable;
 import test.CaseInfo;
 import test.Test;
+import translators.StringRepresentation;
 import db.DataBaseManager;
 
 public class PrototypeSearch {
@@ -24,45 +26,39 @@ public class PrototypeSearch {
 			String[] inputs = result.getString(3).split("\n");
 //			Map<String, String> variables = translator.getVariableTypeTrack();
 			String source = result.getString(1);
-			search(constraint, inputs, source, info);			
+			String introduced= result.getString(4);
+			String type = result.getString(5);
+			search(constraint, inputs, source, info, introduced, type);			
 		}
 	}
 
 	private static void search(String constraint, String[] inputs,
-			String source, CaseInfo info) throws FileNotFoundException {
-		List<String> variableConstraint = getVariableConstraint(inputs);
+			String source, CaseInfo info, String introduced, String type) throws FileNotFoundException {
 		
-//		if(!source.equals("c=a+b")){
-//			return;
-//			//System.out.print("");
-//		}
-		List<List<String>> variablesNames = getPermutation(inputs);
-		boolean positiveFlag = false;
+		
+		
+		if(!info.getType().equals(type)) return;
+		List<String> variableConstraint = getVariableConstraint(inputs, type);
 		boolean passAllPositive = true;
+		boolean positiveFlag = false;
 		for(List<String> positiveInput : info.getPositives().keySet()){
 			List<String> positiveOuput = info.getPositives().get(positiveInput);
-			List<List<String>> inputArray = getPermutation(positiveInput);
+			if(inputs.length > positiveOuput.size()) return;
+			List<String> stateConstraint = getStateConstraint(positiveOuput);
 			List<List<String>> outputArray = getPermutation(positiveOuput);
 			
-			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ctest/test/temp")));
-			for(List<String> in : inputArray){
-				for(List<String> out : outputArray){
-					for(List<String> variables : variablesNames){
-						List<String> mapping = new ArrayList<String>();
-						for(int i = 0; i < Math.min(in.size(), variables.size()); i++){
-							String c = "(assert (= " + in.get(i) + " " + variables.get(i).split(":")[1] + " ))"; 
-							mapping.add(c);
-						}
-						for(int i = 0; i < Math.min(out.size(), variables.size()); i++){
-							String c = "(assert (= " + out.get(i) + " " + variables.get(i).split(":")[1] + " ))";
-							mapping.add(c);
-						}
+			for(List<String> out : outputArray){
+					List<String> mapping = new ArrayList<String>();
+					for(int i = 0; i < inputs.length; i++){
+						String c = "(assert (= " + out.get(i).split(" ")[0] + " " + inputs[i].split(":")[1] + " ))"; 
 						
-						if(validate(variableConstraint, mapping, constraint)){
-							positiveFlag = true;
-						}
+						mapping.add(c);
 					}
-				}
+
+					
+					if(validate(variableConstraint, mapping, constraint, stateConstraint)){
+						positiveFlag = true;
+					}
 			}
 			if(positiveFlag == true){
 				positiveFlag = false;
@@ -77,29 +73,22 @@ public class PrototypeSearch {
 		boolean negativeFlag = false;
 		boolean passAllNegativeFlag = true;
 		for(List<String> negativeInput : info.getNegatives().keySet()){
-			List<String> negativeOuput = info.getNegatives().get(negativeInput);
-			List<List<String>> inputArray = getPermutation(negativeInput);
-			List<List<String>> outputArray = getPermutation(negativeOuput);
-			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ctest/test/temp")));
-			for(List<String> in : inputArray){
+			List<String> negativeOutput = info.getNegatives().get(negativeInput);
+			if(inputs.length > negativeOutput.size()) return;
+			List<List<String>> outputArray = getPermutation(negativeOutput);
+			List<String> stateConstraint = getStateConstraint(negativeOutput);
 				for(List<String> out : outputArray){
-					for(List<String> variables : variablesNames){
-						List<String> mapping = new ArrayList<String>();
-						for(int i = 0; i < Math.min(in.size(), variables.size()); i++){
-							String c = "(assert (= " + in.get(i) + " " + variables.get(i).split(":")[1] + " ))"; 
-							mapping.add(c);
-						}
-						for(int i = 0; i < Math.min(out.size(), variables.size()); i++){
-							String c = "(assert (= " + out.get(i) + " " + variables.get(i).split(":")[1] + " ))";
-							mapping.add(c);
-						}
-						
-						if(!validate(variableConstraint, mapping, constraint)){
-							negativeFlag = true;
-						}
+					List<String> mapping = new ArrayList<String>();
+					
+					for(int i = 0; i < inputs.length; i++){
+						String c = "(assert (= " + out.get(i).split(" ")[0] + " " + inputs[i].split(":")[1] + " ))"; 
+						mapping.add(c);
+					}
+					
+					if(!validate(variableConstraint, mapping, constraint, stateConstraint)){
+						negativeFlag = true;
 					}
 				}
-			}
 			if(negativeFlag == true){
 				negativeFlag = false;
 				continue;
@@ -114,6 +103,28 @@ public class PrototypeSearch {
 
 
 
+	private static List<String> getStateConstraint(List<String> states) {
+		List<String> list = new ArrayList<String>();
+		for(String s : states){
+			String[] con = s.split(" ");
+			String type = TypeTable.getInstance().getType(con[2]);
+			String id = con[0];
+			String value = con[1];
+			if(!type.equals("String"))
+			{	
+				String delcare = "(declare-fun " + id + " () " + type+ ")";
+				String assign = "(assert (= " + id + " " + value +"))";
+				list.add(delcare);
+				list.add(assign);
+			}
+			else{
+				StringRepresentation rep = new StringRepresentation(id, value);
+				list.addAll(rep.getConstraints());
+			}
+		}
+		return list;
+	}
+
 	private static List<List<String>> getPermutation(String[] inputs) {
 		List<String> list = new ArrayList<String>();
 		for(String s : inputs){
@@ -123,13 +134,21 @@ public class PrototypeSearch {
 	}
 
 	private static boolean validate(List<String> variableConstraint,
-			List<String> mapping, String constraint) {
+			List<String> mapping, String constraint, List<String> stateConstraint) {
 		try{
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ctest/test/temp")));
+			SearchManager.loadPrototype(bw);
+			bw.flush();
 			for(String s : variableConstraint){
 				bw.write(s);
 				bw.write("\n");
 			}
+			bw.flush();
+			for(String s : stateConstraint){
+				bw.write(s);
+				bw.write("\n");	
+			}
+			bw.flush();
 			for(String s : mapping){
 				bw.write(s);
 				bw.write("\n");				
@@ -149,11 +168,11 @@ public class PrototypeSearch {
 		return false;
 	}
 
-	private static List<String> getVariableConstraint(String[] inputs) {
+	private static List<String> getVariableConstraint(String[] inputs, String type) {
 		List<String> list = new ArrayList<String>();
 		for(String s : inputs){
 			String[] variable = s.split(":");
-			String declare = "(declare-fun " + variable[1] + " () Int)";
+			String declare = "(declare-fun " + variable[1] + " () " + TypeTable.getInstance().getType(type)+ ")";
 			list.add(declare);
 		}
 		return list;

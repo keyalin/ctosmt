@@ -9,6 +9,7 @@ public class CaseInfo {
 	Map<List<String>, List<String>> positives;
 	Map<List<String>, List<String>> negatives;
 	List<String> result;
+	private String type;
 	public CaseInfo() {
 		super();
 		this.positives = new HashMap<List<String>, List<String>>();
@@ -39,11 +40,11 @@ public class CaseInfo {
 		for(List<String> list : this.positives.keySet()){
 			System.out.print("input state:");
 			for(String in : list){
-				System.out.print(in + " ");
+				System.out.print(in + ",");
 			}
 			System.out.print("output state:");
 			for(String out : this.positives.get(list)){
-				System.out.print(out + " ");
+				System.out.print(out + ",");
 			}
 			System.out.println();
 		}
@@ -51,14 +52,22 @@ public class CaseInfo {
 		for(List<String> list : this.negatives.keySet()){
 			System.out.print("input state:");
 			for(String in : list){
-				System.out.print(in + " ");
+				System.out.print(in + ",");
 			}
 			System.out.print("output state:");
 			for(String out : this.negatives.get(list)){
-				System.out.print(out + " ");
+				System.out.print(out + ",");
 			}
 			System.out.println();
 		}
 	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 	
 }

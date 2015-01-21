@@ -1,0 +1,11 @@
+Positive:
+Negative:
+input state:
+output state:c "ab" char*
+buggy line:
+char* c = "ab";
+
+char* test1(){
+	char* c = "ab";
+	return c;
+}

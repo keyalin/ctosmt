@@ -149,7 +149,7 @@ public class SearchManager {
 
 	//check type 
 	
-	private static void loadPrototype(BufferedWriter bw) throws IOException {
+	public static void loadPrototype(BufferedWriter bw) throws IOException {
 		File dir = new File("smt/prototype");
 		for(File file : dir.listFiles()){
 			if(file.isFile()){
@@ -159,7 +159,6 @@ public class SearchManager {
 					bw.write(s);
 					bw.write('\n');
 				}
-				br.close();
 			}
 		}
 		

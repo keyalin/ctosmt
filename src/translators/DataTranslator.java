@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import db.Saver;
 import search.SQLObject;
 import utility.Utility;
 import antlr.DataLexer;
@@ -22,16 +21,20 @@ import antlr.DataParser.CallStatContext;
 import antlr.DataParser.ExprContext;
 import antlr.DataParser.ProgContext;
 import antlr.DataParser.StatementContext;
+import db.Saver;
 
 public class DataTranslator {
 	
-	private static String POST = "_data_";
+	private String POST;
 	private  int count = 0;
 	
 	private String snippet;
 	private List<SQLObject> list;
-	public DataTranslator(String snippet){
-		this.snippet = snippet;
+	private String mainType;
+	public DataTranslator(String fileName, String mainType){
+		this.mainType = mainType;
+		POST = fileName.substring(fileName.lastIndexOf("/") + 1);
+		this.snippet = Utility.getStringFromFile(fileName);
 		this.list = new ArrayList<SQLObject>();
 		Translate();
 		save();
@@ -66,31 +69,71 @@ public class DataTranslator {
 					CallStatContext c = (CallStatContext) child;
 					convert(c);
 				} else if (child instanceof AssignStatContext) {
-					AssignStatContext c = (AssignStatContext) child;
-					convert(c);
+					System.out.println(child.getText());
+					if(((AssignStatContext) child).StringLiteral() != null){
+						AssignStatContext c = (AssignStatContext) child;
+						convertString(c);
+					}
+					else{
+						AssignStatContext c = (AssignStatContext) child;
+						convert(c);
+					}
+					
 				} 
+				else{
+					//System.out.println(child);
+				}
 
 			}
 		
 	}
 }
+	private void convertString(AssignStatContext c) {
+		String source = c.getText();
+		Map<String, String> variables = new HashMap<String, String>();
+		Map<String, String> variablesTypes = new HashMap<String, String>();
+		String id = c.ID().getText();
+		variablesTypes.put(id, "Char*");
+		String newId = this.getProcessedId(variables, id, variablesTypes);
+		String content = c.StringLiteral().getText();
+		StringRepresentation rep = new StringRepresentation(newId, content.substring(1, content.length() - 1));
+		String constraint = "";
+		for(String s : rep.getConstraints()){
+			constraint = constraint + s + "\n";
+		}
+		
+		SQLObject object = new SQLObject();
+		object.setMainType(this.mainType);
+		object.setSource(source);
+		object.setVariableTrack(variables);
+		object.setConstraints(constraint);
+		object.setVariableTypeTrack(variablesTypes);
+		object.getIntroduced().put(id, newId);
+		this.list.add(object);
+		
+	}
 	private void convert(AssignStatContext c) {
 		String source = c.getText();
 		Map<String, String> variables = new HashMap<String, String>();
+		Map<String, String> variablesTypes = new HashMap<String, String>();
 		String id = c.ID().getText();
-		String newId = this.getProcessedId(variables, id);
-		String exprConstraint = this.getExpr(variables, c.expr());
+		variablesTypes.put(id, this.mainType);
+		String newId = this.getProcessedId(variables, id, variablesTypes);
+		String exprConstraint = this.getExpr(variables, c.expr(), variablesTypes);
 		String constraint = "(assert (= " + exprConstraint + " " + newId +  "))";
 		
 		SQLObject object = new SQLObject();
 		object.setSource(source);
 		object.setVariableTrack(variables);
 		object.setConstraints(constraint);
+		object.getIntroduced().put(id, newId);
+		object.setVariableTypeTrack(variablesTypes);
+		object.setMainType(this.mainType);
 		this.list.add(object);
 		
 	}
 	
-	private String getExpr(Map<String, String> variables, ExprContext expr) {
+	private String getExpr(Map<String, String> variables, ExprContext expr, Map<String, String> variablesTypes) {
 
 		// float, int, char, char*
 		if (expr.getChildCount() == 1) {
@@ -99,25 +142,27 @@ public class DataTranslator {
 			}
 			else{
 				String id = expr.ID().getText();
-				String newId = this.getProcessedId(variables, id);	
+				String newId = this.getProcessedId(variables, id, variablesTypes);	
 				return newId;
 			}
 
 		} else {
 			if(expr.expr().size() == 1){
-				return getExpr(variables, expr.expr(0));
+				return getExpr(variables, expr.expr(0), variablesTypes);
 			}
 			return "(" + expr.getChild(1).getText() + " "
-					+ getExpr(variables, expr.expr(0)) + " " + getExpr(variables, expr.expr(1)) + ")";
+					+ getExpr(variables, expr.expr(0), variablesTypes) + " " + getExpr(variables, expr.expr(1), variablesTypes) + ")";
 		}
 		
 	}
 	
-	private String getProcessedId(Map<String, String> variable, String id){
+	private String getProcessedId(Map<String, String> variable, String id, Map<String, String> variablesTypes){
 		if(variable.containsKey(id)) return variable.get(id);
 		this.count++;
 		String newId =  id + POST + count;
 		variable.put(id, newId);
+		variablesTypes.put(newId, variablesTypes.get(id));
+		
 		return newId;
 		
 	}
@@ -133,8 +178,8 @@ public class DataTranslator {
 	}
 	
 	public static void main(String[] args){
-		String snippet = Utility.getStringFromFile("Prototype/Database");
-		DataTranslator translator = new DataTranslator(snippet);
+		//String snippet = Utility.getStringFromFile("Prototype/Database");
+		DataTranslator translator = new DataTranslator("Prototype/Database", "float");
 		translator.print();
 	}
 }

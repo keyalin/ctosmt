@@ -181,7 +181,7 @@ public class SnippetTranslator {
 		String ID = assign.ID().getText();
 		String primitive = assign.StringLiteral().getText();
 		primitive = primitive.substring(1, primitive.length() - 1);
-		StringRepresetation str = new StringRepresetation(ID, primitive);
+		StringRepresentation str = new StringRepresentation(ID, primitive);
 		List<String> represents = str.getConstraints();
 		this.constraints.addAll(represents);
 		

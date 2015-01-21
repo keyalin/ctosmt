@@ -42,14 +42,18 @@ public class Saver {
 			String source = object.getSource();
 			String constraint = object.getConstraints();
 			String variables = formatInput(object.getVariableTrack());
-			String sql = "insert into prototype (source, constraints, variable) " +
-					"values(?, ?, ?)";
+			String introduced = formatInput(object.getIntroduced());
+			String type = object.getMainType();
+			String sql = "insert into prototype (source, constraints, variable, introduced, type) " +
+					"values(?, ?, ?, ?, ?)";
 			PreparedStatement  statement = null;
 			try{
 				statement = DataBaseManager.conn.prepareStatement(sql);
 				statement.setString(1, source);
 				statement.setString(2, constraint);
 				statement.setString(3, variables);
+				statement.setString(4, introduced);
+				statement.setString(5, type);
 				statement.execute();
 			}catch(Exception e){
 				e.printStackTrace();

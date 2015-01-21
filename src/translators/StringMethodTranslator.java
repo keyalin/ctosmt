@@ -137,11 +137,11 @@ public class StringMethodTranslator {
 		if(index == -1){
 			
 			String primitive = "";
-			return new StringRepresetation(output, primitive).getConstraints();			
+			return new StringRepresentation(output, primitive).getConstraints();			
 		}
 		else{
 			String primitive = src.substring(index);
-			return new StringRepresetation(output, primitive).getConstraints();
+			return new StringRepresentation(output, primitive).getConstraints();
 		}
 	}
 	

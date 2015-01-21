@@ -5,10 +5,13 @@ prog : statement*;
 statement
 	: assignStat';'
 	| callStat';'
+//	| StringStat';'
 	;
+
 
 assignStat
 	: ID assignOperater expr
+	| '*' ID assignOperater StringLiteral
 	;
 	
 callStat
@@ -79,15 +82,12 @@ FLOAT: ('0'..'9')+('.')('0'..'9')+;
 WS : [ \t\r\n]+ -> skip;
 
 
-CharacterLiteral 
-	: '\'' (Character) '\''
-	;	
+	
 	
 	
 StringLiteral
-	: StringTag (Character)* StringTag 
+	: '"' (Character)* '"' 
 	;
 
-StringTag : '"';
 
-Character : [0-9|a-z|A-Z|_|'|'|'^'];
+Character : [0-9|a-z|A-Z];
