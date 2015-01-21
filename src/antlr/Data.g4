@@ -4,14 +4,15 @@ prog : statement*;
 
 statement
 	: assignStat';'
+	| declareStat';'
 	| callStat';'
-//	| StringStat';'
 	;
 
+declareStat
+	: type ID;
 
 assignStat
-	: ID assignOperater expr
-	| '*' ID assignOperater StringLiteral
+	: type? ID assignOperater expr
 	;
 	
 callStat
@@ -22,7 +23,10 @@ type
 	: Int
 	| Char
 	| Float
+	| String
 	;
+
+
 	
 expr 
 	: ID 
@@ -31,6 +35,7 @@ expr
 	| expr  addictiveOperator expr
 	| FLOAT
 	| '(' expr ')'
+	| StringLiteral
 	;
 	
 callExpr : ID arguments;
@@ -42,6 +47,7 @@ formalArgument
 	: ID
 	| FLOAT
 	| INT
+	| StringLiteral
 	;
 
 addictiveOperator
@@ -72,6 +78,7 @@ Int : 'int';
 Char : 'char';
 
 Float : 'float';
+String: 'char*';
 
 
 ID : ('a'..'z' |'A'..'Z'|'_'|'|')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;

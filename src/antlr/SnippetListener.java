@@ -9,6 +9,26 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface SnippetListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link SnippetParser#multiOperater}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#multiOperater}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SnippetParser#exprStat}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprStat(@NotNull SnippetParser.ExprStatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#exprStat}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprStat(@NotNull SnippetParser.ExprStatContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SnippetParser#returnStat}.
 	 * @param ctx the parse tree
 	 */
@@ -29,15 +49,45 @@ public interface SnippetListener extends ParseTreeListener {
 	 */
 	void exitStatement(@NotNull SnippetParser.StatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SnippetParser#multiOperater}.
+	 * Enter a parse tree produced by {@link SnippetParser#addictiveOperator}.
 	 * @param ctx the parse tree
 	 */
-	void enterMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
+	void enterAddictiveOperator(@NotNull SnippetParser.AddictiveOperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SnippetParser#multiOperater}.
+	 * Exit a parse tree produced by {@link SnippetParser#addictiveOperator}.
 	 * @param ctx the parse tree
 	 */
-	void exitMultiOperater(@NotNull SnippetParser.MultiOperaterContext ctx);
+	void exitAddictiveOperator(@NotNull SnippetParser.AddictiveOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SnippetParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr(@NotNull SnippetParser.ExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr(@NotNull SnippetParser.ExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SnippetParser#assignStat}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignStat(@NotNull SnippetParser.AssignStatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#assignStat}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignStat(@NotNull SnippetParser.AssignStatContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SnippetParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(@NotNull SnippetParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SnippetParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(@NotNull SnippetParser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SnippetParser#declarationStat}.
 	 * @param ctx the parse tree
@@ -58,54 +108,4 @@ public interface SnippetListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProg(@NotNull SnippetParser.ProgContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#assignStat}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignStat(@NotNull SnippetParser.AssignStatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#assignStat}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignStat(@NotNull SnippetParser.AssignStatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#exprStat}.
-	 * @param ctx the parse tree
-	 */
-	void enterExprStat(@NotNull SnippetParser.ExprStatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#exprStat}.
-	 * @param ctx the parse tree
-	 */
-	void exitExprStat(@NotNull SnippetParser.ExprStatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr(@NotNull SnippetParser.ExprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr(@NotNull SnippetParser.ExprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void enterType(@NotNull SnippetParser.TypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void exitType(@NotNull SnippetParser.TypeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SnippetParser#addictiveOperator}.
-	 * @param ctx the parse tree
-	 */
-	void enterAddictiveOperator(@NotNull SnippetParser.AddictiveOperatorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SnippetParser#addictiveOperator}.
-	 * @param ctx the parse tree
-	 */
-	void exitAddictiveOperator(@NotNull SnippetParser.AddictiveOperatorContext ctx);
 }
