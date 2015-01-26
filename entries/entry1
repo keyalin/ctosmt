@@ -1,0 +1,11 @@
+a:int, b:float, c:char, d:char*, e:int,;
+
+a=(3 + e) * e + 4;
+b = b * 2;
+strcat(d, d);
+strncat(d, d, a);
+strncpy(d, d, a);
+strcpy(d, d);
+* a = "abc";
+
+

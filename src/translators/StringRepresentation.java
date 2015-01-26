@@ -105,7 +105,7 @@ public class StringRepresentation {
 	}
 	
 	public static void main(String[] args){
-		StringRepresentation g = new StringRepresentation("p", "ab\\cd34");
+		StringRepresentation g = new StringRepresentation("c", "ababc");
 		System.out.println(g);
 //		getCharToInt();
 	}

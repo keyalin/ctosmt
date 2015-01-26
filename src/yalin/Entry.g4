@@ -1,11 +1,19 @@
-grammar Data;
+grammar Entry;
 
 prog : statement*;
 
 statement
 	: assignStat';'
 	| callStat';'
+	| typeStat';'
 	;
+
+typeStat
+	: variable+;
+variable: 
+	ID':'type',';
+
+
 
 
 assignStat
@@ -14,14 +22,17 @@ assignStat
 	;
 	
 callStat
-	: callExpr
+	: ID arguments
 	;
 	
 type
 	: Int
 	| Char
 	| Float
+	| String
 	;
+
+
 	
 expr 
 	: ID 
@@ -32,7 +43,6 @@ expr
 	| '(' expr ')'
 	;
 	
-callExpr : ID arguments;
 
 arguments:
 	'(' (formalArgument(',' formalArgument)*)? ')';
@@ -70,7 +80,8 @@ Int : 'int';
 
 Char : 'char';
 
-Float : 'float';
+Float : 'float' | 'double';
+String : 'char*';
 
 
 ID : ('a'..'z' |'A'..'Z'|'_'|'|')('a'..'z' |'A'..'Z'|'_' | '0'..'9')*;
