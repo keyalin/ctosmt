@@ -73,6 +73,7 @@ public class StringRepresentation {
 
 
 	private void generateConstraints(){
+		constraints.add(getDeclareConstraint(name));
 		constraints.add(getLengthConstraints(name, content));
 		for(int i = 0; i < content.length(); i++){
 			constraints.add(getCharOfConstraint(name, content,i));

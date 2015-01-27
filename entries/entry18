@@ -1,0 +1,5 @@
+a:char*, b:char*,;
+
+* a = "abcd";
+strcpy(b, a);
+

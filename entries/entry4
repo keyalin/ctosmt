@@ -1,0 +1,4 @@
+a:int, b:char*, c:char*,;
+
+a = 2;
+strncpy(b, c, a);

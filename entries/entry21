@@ -1,0 +1,3 @@
+a:int, b:char*, c:char*,;
+
+strncat(b, c, a);

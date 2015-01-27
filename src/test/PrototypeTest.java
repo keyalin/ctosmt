@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import search.PrototypeSearch;
+import yalin.CaseInfo;
 
 public class PrototypeTest {
 	
@@ -95,11 +96,8 @@ public class PrototypeTest {
 					//input
 					sb = reader.readLine().trim();
 					for(String o : sb.substring(13).split(",")){
+						if(o.equals("")) continue;
 						output.add(o);
-						if(type == null){
-							type = o.split(" ")[2];
-							info.setType(type);
-						}
 					}
 					if(positive){
 						info.getPositives().put(input, output);
@@ -122,7 +120,7 @@ public class PrototypeTest {
 	
 	
 	public static void main(String[] args){
-		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case5");
+		CaseInfo info = PrototypeTest.parse("Prototype/test cases/case1");
 		info.print();
 	}
 }

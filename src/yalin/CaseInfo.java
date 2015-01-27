@@ -1,4 +1,4 @@
-package test;
+package yalin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ public class CaseInfo {
 	Map<List<String>, List<String>> positives;
 	Map<List<String>, List<String>> negatives;
 	List<String> result;
-	private String type;
 	public CaseInfo() {
 		super();
 		this.positives = new HashMap<List<String>, List<String>>();
@@ -60,12 +59,6 @@ public class CaseInfo {
 			}
 			System.out.println();
 		}
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 	
 	

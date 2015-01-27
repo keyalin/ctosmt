@@ -42,18 +42,20 @@ public class Saver {
 		DataBaseManager.connect(DataBaseManager.USER, DataBaseManager.PASSWORD, DataBaseManager.DATABASE);
 		String source = object.getSource();
 		String constraint = object.getConstraint();
-		String variables = formatInput(object.getVariableMap());
+		String variablesMap = formatInput(object.getVariableMap());
 		//String introduced = formatInput(object.getIntroduced());
 		String type = formatInput(object.getVariablesTypes());
-		String sql = "insert into prototype (source, constraints, variableType, variables) " +
-				"values(?, ?, ?, ?)";
+		String variableTrack = formatInput(object.getVariableTrack());
+		String sql = "insert into prototype (source, constraints, variableType, variableTrack, variableMap) " +
+				"values(?, ?, ?, ?, ?)";
 		PreparedStatement  statement = null;
 		try{
 			statement = DataBaseManager.conn.prepareStatement(sql);
 			statement.setString(1, source);
 			statement.setString(2, constraint);
 			statement.setString(3, type);
-			statement.setString(4, variables);
+			statement.setString(4, variableTrack);
+			statement.setString(5, variablesMap);
 			statement.execute();
 		}catch(Exception e){
 			e.printStackTrace();

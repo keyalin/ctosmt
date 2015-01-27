@@ -1,0 +1,4 @@
+a:float, b:float,;
+
+b = a * 2;
+

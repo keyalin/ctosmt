@@ -1,0 +1,6 @@
+a:char*, b:char*, c:int,;
+
+* a = "abcd";
+c = 1;
+strncpy(b, a, c);
+
