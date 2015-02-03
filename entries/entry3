@@ -1,4 +1,3 @@
 a:int, b:char*, c:char*,;
 
-a = 10;
 strncpy(b, c, a);

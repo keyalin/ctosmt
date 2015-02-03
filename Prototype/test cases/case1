@@ -1,13 +1,13 @@
 Positive:
-input state:a 3 int,b "a" char*,c "abc" char*
-output state:a 3 int,b "aabc" char*,c "abc" char*
-input state:a 2 int,b "a" char*,c "ab" char*
-output state:a 2 int,b "aab" char*,c "ab" char*
+input state:a:3:int,b:"a":char*,c:"abc":char*
+output state:a:3:int,b:"aabc":char*,c:"abc":char*
+input state:a:2:int,b:"a":char*,c:"ab":char*
+output state:a:2:int,b:"aab":char*,c:"ab":char*
 Negative:
-input state:a 1 int,b "a" char*,c "be" char*
-output state:a 1 int,b "abe" char*,c "be" char*
-input state:a 2 int,b "a" char*,c "bed" char*
-output state:a 2 int,b "abed" char*,c "bed" char*
+input state:a:1:int,b:"a":char*,c:"be":char*
+output state:a:1:int,b:"abe":char*,c:"be":char*
+input state:a:2:int,b:"a":char*,c:"bed":char*
+output state:a:2:int,b:"abed":char*,c:"bed":char*
 buggy line:
 strcat(b, c);----->strncat(b, c,a);
 

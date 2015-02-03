@@ -1,18 +1,17 @@
 Positive:
-input state:a 0 int,b 0 int
-output state:a 0 int,b 0 int,c 0 int
-input state:a 2 int,b 2 int
-output state:a 2 int,b 2 int,c 4 int
+input state:a:1:int,b:"":char*,c:"abc":char*
+output state:a:1:int,b:"a":char*,c:"abc":char*
+input state:a:2:int,b:"":char*,c:"ab":char*
+output state:a:2:int,b:"ab":char*,c:"ab":char*
 Negative:
-input state:a 1 int,b 1 int
-output state:a 1 int,b 1 int,c 1 int
-input state:a 3 int,b 1 int
-output state:a 3 int,b 1 int,c 3 int
+input state:a:1:int,b:"a":char*,c:"be":char*
+output state:a:1:int,b:"ab":char*,c:"be":char*
+input state:a:2:int,b:"a":char*,c:"bed":char*
+output state:a:2:int,b:"abe":char*,c:"bed":char*
 buggy line:
-int c = a * b;
+strncat(b, c, a);----->strncpy(b, c, a); || strcpy(b,c); strncpy(b, c, a)
 
-int test1(int a int b){
-	int c = a * b;
-	c = c + 2;
-	return d;
+char* test1(int a, char* b, char* c){
+	strncat(b, c, a);
+	return b;
 }

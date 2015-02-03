@@ -9,11 +9,13 @@ public class CaseInfo {
 	Map<List<String>, List<String>> positives;
 	Map<List<String>, List<String>> negatives;
 	List<String> result;
+	Map<String, Map<String, String>> mapping;
 	public CaseInfo() {
 		super();
 		this.positives = new HashMap<List<String>, List<String>>();
 		this.negatives = new HashMap<List<String>, List<String>>();
 		this.result = new ArrayList<String>();
+		this.mapping = new HashMap<String, Map<String, String>>();
 	}
 	public Map<List<String>, List<String>> getPositives() {
 		return positives;
@@ -60,6 +62,14 @@ public class CaseInfo {
 			System.out.println();
 		}
 	}
+	public Map<String, Map<String, String>> getMapping() {
+		return mapping;
+	}
+	public void setMapping(Map<String, Map<String, String>> mapping) {
+		this.mapping = mapping;
+	}
+	
+	
 	
 	
 	

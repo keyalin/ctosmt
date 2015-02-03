@@ -1,16 +1,17 @@
 Positive:
-input state:a 0 float,b 0 float
-output state:a 0 float,b 0 float,c 0 float
+input state:a:1:int,c:"":char*,b:"ab":char*
+output state:a:1:int,c:"ab":char*,b:"ab":char*
+input state:a:2:int,c:"":char*,b:"be":char*
+output state:a:2:int,c:"be":char*,b:"be":char*
 Negative:
-input state:a 1 float,b 1 float
-output state:a 1 float,b 1 float,c 2 float
-input state:a 2 float,b 2 float 
-output state:a 2 float,b 2 float,c 4 float
+input state:a:1:int,c:"a":char*,b:"bed":char*
+output state:a:1:int,c:"bed":char*,b:"bed":char*
+input state:a:2:int,c:"a":char*,b:"abc":char*
+output state:a:2:int,c:"abe":char*,b:"abc":char*
 buggy line:
-float c = a + b;
+strcpy(b, c);;----->a = 2, strncpy(b, c, a); or strcat(b, c)
 
-float test1(float a float b){
-	float c = a + b;
-	c = c + 2;
+char* test1(int a, char* b, char* c){
+	strcpy(c, b);
 	return c;
 }
