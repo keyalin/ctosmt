@@ -46,7 +46,7 @@ public class PrototypeTest {
 		printResult(info);
 	}
 	
-	private void printResult(CaseInfo info){
+	public static void printResult(CaseInfo info){
 		for(String s : info.getMapping().keySet()){
 			System.out.println("--------------------------");
 			System.out.println("source: ");

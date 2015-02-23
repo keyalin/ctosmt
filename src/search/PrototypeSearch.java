@@ -41,8 +41,8 @@ public class PrototypeSearch {
 		List<Map<String, String>> list = getValidateMapping(variableTypes, info, variableTracks);
 		if(list.isEmpty()) return;
 		
-		//String mappingConstraint = getMappingConstraint(list);
-		//System.out.println(mappingConstraint);
+//		String mc = getMappingConstraint(list);
+//		System.out.println(mc);
 		List<String> delcarations = getVariableTypeConstraint(variableTypes);
 		//
 		for(Map<String, String> map : list){
@@ -66,7 +66,7 @@ public class PrototypeSearch {
 				if(validate(delcarations, mappingConstraint, constraint, states)) pass = false;
 			}
 			if(!pass) continue;
-			System.out.println(mappingConstraint);
+			//System.out.println(mappingConstraint);
 			info.getResult().add(source);
 			Map<String, String> track = getVariableTrack(mapping);
 			Map<String, String> rel = new HashMap<String, String>();
@@ -195,27 +195,6 @@ public class PrototypeSearch {
 		return map;
 	}
 
-	//(and (= c_out c)(= c_in c)(= b_out _entry21_0)(= b_in b)(= a_out a)(= a_in a))
-	private static List<Map<String, String>> getValidateMapping(String[] variableType, CaseInfo info){
-		List<String> inputs = new ArrayList<String>();
-		List<String> outputs = new ArrayList<String>();
-		for(List<String> l : info.getPositives().keySet()){
-			inputs = l;
-			outputs = info.getPositives().get(l);
-			break;
-		}
-		List<String> variables = new ArrayList<String>();
-		for(String s : variableType){
-			variables.add(s);
-		}
-		
-		List<Map<String, String>> inputMapping = getMapping(variables, inputs, "_in");
-		List<Map<String, String>> outputMapping = getMapping(variables, outputs, "_out");		
-		List<Map<String, String>> mergeMapping = mergeMapping(inputMapping, outputMapping);
-		
-		return mergeMapping;		
-	}
-
 
 	private static List<Map<String, String>> mergeMapping(
 			List<Map<String, String>> inputMapping,
@@ -284,7 +263,8 @@ public class PrototypeSearch {
 				list.add(assign);
 			}
 			else{
-				StringRepresentation rep = new StringRepresentation(id, value.substring(1, value.length() - 1));
+				//StringRepresentation rep = new StringRepresentation(id, value.substring(1, value.length() - 1));
+				StringRepresentation rep = new StringRepresentation(id, value);
 				list.addAll(rep.getConstraints());
 			}
 		}

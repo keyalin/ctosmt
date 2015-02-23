@@ -1,4 +1,4 @@
-apackage yalin;
+package yalin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import test.Test;
 import utility.Utility;
 
 
@@ -55,7 +56,7 @@ public class CTest {
 	}
 	
 	
-	public static String runCProgram(String[] command){
+	public static String runCProgram(String command){
 		String out = "";
 		String ls_str;
 		StringBuffer sb = new StringBuffer();
@@ -64,8 +65,8 @@ public class CTest {
 
 			BufferedReader ls_in = new BufferedReader(new InputStreamReader(
 					ls_proc.getInputStream()));
-//			BufferedReader ls_err = new BufferedReader(new InputStreamReader(
-//					ls_proc.get));
+			BufferedReader ls_err = new BufferedReader(new InputStreamReader(
+					ls_proc.getErrorStream()));
 
 			long now = System.currentTimeMillis();
 			long timeoutInMillis = 100L * 10; // timeout in seconds
@@ -84,10 +85,10 @@ public class CTest {
 					sb.append(ls_str);
 					// System.out.println(ls_str);
 				}
-//				while((ls_str = ls_err.readLine()) != null){
-//					System.out.println(ls_str+ "j");
-//					sb.append(ls_str);
-//				}
+				while((ls_str = ls_err.readLine()) != null){
+					System.out.println(ls_str+ "j");
+					sb.append(ls_str);
+				}
 			} catch (IOException e) {
 				out = sb.toString();
 				// System.exit(0);
@@ -109,13 +110,19 @@ public class CTest {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, InterruptedException{
 		//String command = "gcc ccode/test.c -o test";
 		String g = Utility.getStringFromFile("ccode/test.c");
-		String[] command = {"/usr/bin/gcc ccode/test.c -o test","./test"};
-		runCProgram(command);
+		String command = "gcc   ccode/test.c -o test.o";
+		Test.invokeZ3onFile("ctest/test/temp");
+		CTest.runCProgram(command);
+		String s = runCProgram("./test.o");
+		System.out.println(s);
+		//Process p = Runtime.getRuntime().exec(command);
+		//p.waitFor();
+		//Thread.currentThread().sleep(3000);
 		//Process ls_proc = Runtime.getRuntime().exec(command);
-		System.out.println(g);
+		//System.out.println(g);
 	}
 
 }

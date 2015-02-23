@@ -145,6 +145,7 @@ public class Test {
 		String out = "";
 		String execString = "CSMT/z3"
 				+ " -smt2 -nw -file:" + file;
+		//System.out.println(execString);
 		String ls_str;
 		StringBuffer sb = new StringBuffer();
 		try {
